@@ -29,6 +29,9 @@
 		"typescript": "^5"
 	},
 	"lint-staged": {
-		"*.{js,ts,jsx,tsx}": "npx biome check --apply --no-errors-on-unmatched"
+		"*.{js,ts,jsx,tsx}": [
+			"npx biome format --write --no-errors-on-unmatched",
+			"npx biome check --apply --no-errors-on-unmatched"
+		]
 	}
 }
