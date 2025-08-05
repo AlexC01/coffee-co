@@ -79,7 +79,7 @@ const Footer = () => {
 					</div>
 				</div>
 				<div className="mt-8 text-sm text-gray-500 text-center">
-					&copy; 2024 Coffee Co. All Rights Reserved.
+					&copy; 2025 Coffee Co. All Rights Reserved.
 				</div>
 			</div>
 		</footer>
