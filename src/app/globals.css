@@ -22,3 +22,43 @@ body {
 	color: var(--foreground);
 	font-family: var(--font-poppins);
 }
+
+.scrolling-logos {
+	display: flex;
+	overflow: hidden;
+	white-space: nowrap;
+	mask-image: linear-gradient(
+		to right,
+		transparent,
+		black 10%,
+		black 90%,
+		transparent
+	);
+}
+
+.scrolling-logos-inner {
+	display: flex;
+	animation: scroll-logos 15s linear infinite;
+	width: max-content;
+}
+
+.scrolling-logos-inner h4 {
+	height: 48px;
+	margin: 0 4rem;
+	filter: grayscale(100%) opacity(70%);
+	transition: filter 0.3s ease-in-out;
+	flex-shrink: 0;
+}
+
+.scrolling-logos-inner h4:hover {
+	filter: grayscale(0%) opacity(100%);
+}
+
+@keyframes scroll-logos {
+	from {
+		transform: translateX(0%);
+	}
+	to {
+		transform: translateX(-50%);
+	}
+}
