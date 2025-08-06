@@ -2,6 +2,7 @@ import Image from 'next/image';
 import heroImage from '@/../public/images/hero-mugs.webp';
 import BrandCarousel from './_components/BrandCarousel/BrandCarousel';
 import Card from './_components/Card/Card';
+import ReviewCard from './_components/ReviewCard/ReviewCard';
 
 export default function Home() {
 	return (
@@ -44,7 +45,7 @@ export default function Home() {
 					<h3 className="text-2xl md:text-4xl text-center font-bold">
 						Our Best Sellers
 					</h3>
-					<div className="mt-5 px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4  gap-10">
+					<div className="mt-10 px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4  gap-10">
 						<Card
 							title="Owala 32oz. FreeSip Stainless Steel Water Bottle"
 							price="44.44"
@@ -52,6 +53,49 @@ export default function Home() {
 						<Card title="Porto Brasil Organic Mug Set of 4" price="2806.44" />
 						<Card title="Villeroy & Boch NewWave Caffè Mug" price="24.44" />
 						<Card title="Ocean Bottle Original 34-Ounce Bottle" price="33.1" />
+					</div>
+				</div>
+			</section>
+
+			<section className=" bg-background-50 py-16 md:py-24 ">
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<h3 className="text-center text-2xl md:text-4xl text-gray-600 font-extrabold ">
+						What Our Customers Say
+					</h3>
+					<div className="mt-10 px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+						<ReviewCard
+							name="Jane Doe"
+							review="Absolutely love my new mug. The design is so simple and elegant, and it feels great in my hand. It's the perfect size for my morning coffee. "
+						/>
+						<ReviewCard
+							name="Jane Doe"
+							review="The quality is exceptional. I've been looking for a mug like this for ages. It's stylish and feels incredibly durable. Highly recommend!"
+						/>
+						<ReviewCard
+							name="Sarah Miller"
+							review="My new go-to mug. The minimalist design fits perfectly with my kitchen aesthetic. The color is beautiful and exactly as pictured."
+						/>
+					</div>
+				</div>
+			</section>
+
+			<section className=" bg-white py-16 md:py-24 ">
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div className="text-center">
+						<h3 className="text-2xl md:text-4xl  font-bold">
+							Crafted for Simplicity
+						</h3>
+						<p className="my-8 max-w-2xl mx-auto text-lg text-gray-600">
+							At The Minimalist Market, we believe in the beauty of simplicity.
+							Each mug is a testament to quality craftsmanship and thoughtful
+							design, made to be a cherished part of your daily ritual.
+						</p>
+						<a
+							href="/"
+							className="inline-block font-medium text-lg text-accent-500 border-b-2 border-accent-500 hover:text-accent-600 hover:border-accent-600 transition-colors duration-300"
+						>
+							Learn More About Us
+						</a>
 					</div>
 				</div>
 			</section>
