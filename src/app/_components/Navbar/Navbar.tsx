@@ -1,5 +1,5 @@
 'use client';
-import { CircleUser, Menu, ShoppingCart, User } from 'lucide-react';
+import { Menu, ShoppingCart, User } from 'lucide-react';
 import { useState } from 'react';
 
 const Navbar = () => {
