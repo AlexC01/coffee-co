@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import heroImage from '@/../public/images/hero-mugs.webp';
 import BrandCarousel from './_components/BrandCarousel/BrandCarousel';
+import Card from './_components/Card/Card';
 
 export default function Home() {
 	return (
@@ -35,6 +36,23 @@ export default function Home() {
 			<section className=" bg-background-50 py-16 md:py-24 ">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<BrandCarousel />
+				</div>
+			</section>
+
+			<section className=" bg-white py-16 md:py-24 ">
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<h3 className="text-2xl md:text-4xl text-center font-bold">
+						Our Best Sellers
+					</h3>
+					<div className="mt-5 px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4  gap-10">
+						<Card
+							title="Owala 32oz. FreeSip Stainless Steel Water Bottle"
+							price="44.44"
+						/>
+						<Card title="Porto Brasil Organic Mug Set of 4" price="2806.44" />
+						<Card title="Villeroy & Boch NewWave Caffè Mug" price="24.44" />
+						<Card title="Ocean Bottle Original 34-Ounce Bottle" price="33.1" />
+					</div>
 				</div>
 			</section>
 		</main>

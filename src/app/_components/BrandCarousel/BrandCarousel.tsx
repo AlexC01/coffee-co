@@ -12,12 +12,12 @@ const combinedBrands = [...brandNames, ...brandNames];
 const BrandCarousel = () => {
 	return (
 		<div>
-			<h3 className="text-center text-2xl md:text-3xl text-gray-600 font-extrabold ">
+			<h3 className="text-center text-2xl md:text-4xl text-gray-600 font-extrabold ">
 				Trusted by cafes and designers worldwide
 			</h3>
 
-			<div className="px-4 mt-4">
-				<div className="scrolling-logos mt-10">
+			<div className="px-4 mt-10">
+				<div className="scrolling-logos mt-5 md:mt-10">
 					<div className="scrolling-logos-inner flex">
 						{combinedBrands.map((brand, index) => (
 							<h4
