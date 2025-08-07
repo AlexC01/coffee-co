@@ -10,7 +10,7 @@ interface CardsProps {
 const Card = ({ title, price }: CardsProps) => {
 	return (
 		<div className="w-full shadow-md rounded-b-lg bg-white relative cursor-pointer hover:shadow-xl transition-shadow duration-400">
-			<div className="flex flex-col space-y-1 h-full">
+			<div className="flex flex-col space-y-1 h-full ">
 				<Image
 					src={heroImage}
 					alt="Mugs"
