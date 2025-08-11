@@ -1,10 +1,14 @@
 import Image from 'next/image';
+import { Suspense } from 'react';
 import heroImage from '@/../public/images/hero-mugs.webp';
 import BrandCarousel from './_components/BrandCarousel/BrandCarousel';
-import Card from './_components/Card/Card';
+import SkeletonCard from './_components/Card/SkeletonCard';
+import HomeCards from './_components/Home/HomeCards';
 import ReviewCard from './_components/ReviewCard/ReviewCard';
+import { getFeaturedProducts } from './lib/services/productService';
 
 export default function Home() {
+	const products = getFeaturedProducts();
 	return (
 		<main className="min-h-screen pt-16">
 			<section className="bg-white py-16 md:py-24">
@@ -46,13 +50,18 @@ export default function Home() {
 						Our Best Sellers
 					</h3>
 					<div className="mt-10 px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4  gap-10">
-						<Card
-							title="Owala 32oz. FreeSip Stainless Steel Water Bottle"
-							price="44.44"
-						/>
-						<Card title="Porto Brasil Organic Mug Set of 4" price="2806.44" />
-						<Card title="Villeroy & Boch NewWave Caffè Mug" price="24.44" />
-						<Card title="Ocean Bottle Original 34-Ounce Bottle" price="33.1" />
+						<Suspense
+							fallback={
+								<>
+									<SkeletonCard />
+									<SkeletonCard />
+									<SkeletonCard />
+									<SkeletonCard />
+								</>
+							}
+						>
+							<HomeCards products={products} />
+						</Suspense>
 					</div>
 				</div>
 			</section>

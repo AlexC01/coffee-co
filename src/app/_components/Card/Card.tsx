@@ -1,19 +1,21 @@
 import { Heart } from 'lucide-react';
 import Image from 'next/image';
-import heroImage from '@/../public/images/hero-mugs.webp';
 
 interface CardsProps {
 	title: string;
 	price: string;
+	image: string;
 }
 
-const Card = ({ title, price }: CardsProps) => {
+const Card = ({ title, price, image }: CardsProps) => {
 	return (
 		<div className="w-full shadow-md rounded-b-lg bg-white relative cursor-pointer hover:shadow-xl transition-shadow duration-400">
-			<div className="flex flex-col space-y-1 h-full ">
+			<div className="flex flex-col space-y-1 h-full relative ">
 				<Image
-					src={heroImage}
+					src={image}
 					alt="Mugs"
+					width={500}
+					height={500}
 					className="rounded-t-xl shadow-md h-auto object-cover md:h-auto md:w-full"
 					priority
 				/>
