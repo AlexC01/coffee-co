@@ -10,9 +10,10 @@ interface CardsProps {
 	price: string;
 	images: string[];
 	colors: string[];
+	sizes: string[];
 }
 
-const Card = ({ title, price, images, colors }: CardsProps) => {
+const Card = ({ title, price, images, colors, sizes }: CardsProps) => {
 	const [currentSelection, setCurrentSelection] = useState(0);
 
 	const updateSelection = (
@@ -31,18 +32,21 @@ const Card = ({ title, price, images, colors }: CardsProps) => {
 					alt="Mugs"
 					width={500}
 					height={500}
-					className="rounded-t-xl shadow-md h-auto object-cover md:h-auto w-full"
+					className="rounded-t-xl shadow-md h-auto object-cover w-full"
 					priority
 				/>
 				<div className="flex flex-col flex-grow p-4">
 					<h4 className="text-sm text-gray-700 font-semibold ">{title}</h4>
+					<span className="text-sm text-gray-500 inline-block ">
+						{sizes.join(' / ')}
+					</span>
 					<ColorSelector
 						colors={colors}
 						selected={currentSelection}
 						changeSelected={updateSelection}
 					/>
 					<div className="mt-auto flex justify-between items-center">
-						<span className="text-gray-500 text-sm font-semibold">
+						<span className="text-gray-700 text-md font-semibold">
 							${Number(price).toFixed(2)}
 						</span>
 						<Heart

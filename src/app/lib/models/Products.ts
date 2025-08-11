@@ -9,6 +9,7 @@ export interface ProductInterfaceResponse {
 	images: string[];
 	colors: string[];
 	isFeatured: boolean;
+	sizes: string[];
 	createdAt: Timestamp;
 }
 
@@ -21,5 +22,6 @@ export interface ProductInterface {
 	images: string[];
 	colors: string[];
 	isFeatured: boolean;
+	sizes: string[];
 	createdAt: string;
 }

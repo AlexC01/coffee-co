@@ -20,7 +20,7 @@ const ColorSelector = ({
 	changeSelected,
 }: ColorSelectorProps) => {
 	return (
-		<div className="flex items-center space-x-2 mt-2 mb-4">
+		<div className="flex items-center space-x-2 mt-3 mb-3">
 			{colors.map((item, index) => {
 				const newId = item
 					.toLowerCase()
@@ -30,7 +30,7 @@ const ColorSelector = ({
 					<button
 						type="button"
 						key={newId}
-						className={`w-6 h-6 ${colorClass} rounded-full border-2 cursor-pointer transition-all duration-200 ${selected === index ? 'border-gray-400 ring-2 ring-offset-1 ring-gray-400' : 'border-gray-300 hover:ring-2 hover:ring-offset-1 hover:ring-gray-300'}`}
+						className={`w-5 h-5 ${colorClass} rounded-full border-2 cursor-pointer transition-all duration-200 ${selected === index ? 'border-gray-400 ring-2 ring-offset-1 ring-gray-400' : 'border-gray-300 hover:ring-2 hover:ring-offset-1 hover:ring-gray-300'}`}
 						onClick={(e) => changeSelected(e, index)}
 					/>
 				);
