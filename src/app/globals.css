@@ -7,6 +7,14 @@
 
 @theme {
 	--font-poppins: Poppins, sans-serif;
+
+	/* Custom Mugs colors */
+
+	--color-forest-green: #225829;
+	--color-creamy-beige: #f5f5dc;
+	--color-baby-blue: #89cff0;
+	--color-deep-blue: #12122b;
+	--color-midnight-blue: #191970;
 }
 
 @theme inline {
