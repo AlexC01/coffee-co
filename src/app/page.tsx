@@ -60,7 +60,7 @@ export default function Home() {
 								</>
 							}
 						>
-							<HomeCards products={products} />
+							<HomeCards featuredProd={products} />
 						</Suspense>
 					</div>
 				</div>

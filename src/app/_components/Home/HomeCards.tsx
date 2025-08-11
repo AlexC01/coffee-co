@@ -4,14 +4,17 @@ import type { ProductInterface } from '@/app/lib/models/Products';
 import Card from '../Card/Card';
 
 interface HomeCardsProps {
-	products: Promise<ProductInterface[]>;
+	featuredProd: Promise<ProductInterface[]>;
 }
 
-const HomeCards = ({ products }: HomeCardsProps) => {
-	const allProducts = use(products);
+const HomeCards = ({ featuredProd }: HomeCardsProps) => {
+	const featuredProducts = use(featuredProd);
+
+	if (featuredProducts.length === 0) null;
+
 	return (
 		<>
-			{allProducts.map((product) => (
+			{featuredProducts.map((product) => (
 				<Card
 					key={product.id}
 					title={product.name}

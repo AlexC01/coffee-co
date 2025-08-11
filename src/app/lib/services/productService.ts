@@ -14,7 +14,7 @@ import type {
 
 const transformData = (
 	querySnapshot: QuerySnapshot<DocumentData, DocumentData>,
-) => {
+): ProductInterface[] => {
 	return querySnapshot.docs.map((doc) => {
 		const data = doc.data() as ProductInterfaceResponse;
 		const createdAt = data.createdAt.toDate().toISOString();
@@ -27,11 +27,16 @@ const transformData = (
 	});
 };
 
-export const getFeaturedProducts = async (): Promise<ProductInterface[]> => {
-	const productsCollection = collection(db, 'products');
-	const q = query(productsCollection, where('isFeatured', '==', true));
+export const getFeaturedProducts = async () => {
+	try {
+		const productsCollection = collection(db, 'products');
+		const q = query(productsCollection, where('isFeatured', '==', true));
 
-	const querySnapshot = await getDocs(q);
+		const querySnapshot = await getDocs(q);
 
-	return transformData(querySnapshot);
+		return transformData(querySnapshot);
+	} catch (err) {
+		console.error('Error while fetching featured products', err);
+		return [];
+	}
 };
