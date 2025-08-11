@@ -1,29 +1,49 @@
+'use client';
+
 import { Heart } from 'lucide-react';
 import Image from 'next/image';
+import { useState } from 'react';
+import ColorSelector from './ColorSelector';
 
 interface CardsProps {
 	title: string;
 	price: string;
-	image: string;
+	images: string[];
+	colors: string[];
 }
 
-const Card = ({ title, price, image }: CardsProps) => {
+const Card = ({ title, price, images, colors }: CardsProps) => {
+	const [currentSelection, setCurrentSelection] = useState(0);
+
+	const updateSelection = (
+		e: React.MouseEvent<HTMLButtonElement>,
+		value: number,
+	) => {
+		e.stopPropagation();
+		setCurrentSelection(value);
+	};
+
 	return (
 		<div className="w-full shadow-md rounded-b-lg bg-white relative cursor-pointer hover:shadow-xl transition-shadow duration-400">
 			<div className="flex flex-col space-y-1 h-full relative ">
 				<Image
-					src={image}
+					src={images[currentSelection]}
 					alt="Mugs"
 					width={500}
 					height={500}
-					className="rounded-t-xl shadow-md h-auto object-cover md:h-auto md:w-full"
+					className="rounded-t-xl shadow-md h-auto object-cover md:h-auto w-full"
 					priority
 				/>
 				<div className="flex flex-col flex-grow p-4">
-					<h4 className="text-sm text-gray-700 font-semibold mb-5">{title}</h4>
+					<h4 className="text-sm text-gray-700 font-semibold ">{title}</h4>
+					<ColorSelector
+						colors={colors}
+						selected={currentSelection}
+						changeSelected={updateSelection}
+					/>
 					<div className="mt-auto flex justify-between items-center">
 						<span className="text-gray-500 text-sm font-semibold">
-							${price}
+							${Number(price).toFixed(2)}
 						</span>
 						<Heart
 							strokeWidth={1.5}

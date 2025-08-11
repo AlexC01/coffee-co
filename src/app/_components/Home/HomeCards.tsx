@@ -19,7 +19,8 @@ const HomeCards = ({ featuredProd }: HomeCardsProps) => {
 					key={product.id}
 					title={product.name}
 					price={product.price.toString()}
-					image={product.images[0]}
+					images={product.images}
+					colors={product.colors}
 				/>
 			))}
 		</>
