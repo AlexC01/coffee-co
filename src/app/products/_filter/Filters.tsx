@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import ColorFilter from '@/app/_components/Inputs/ColorFilter';
 import PriceRange from '@/app/_components/Inputs/PriceRange';
 import type { ProductInterface } from '@/app/lib/models/Products';
@@ -7,6 +10,19 @@ interface FiltersProps {
 }
 
 const Filters = ({ products }: FiltersProps) => {
+	const [colorsSelected, setColorsSelected] = useState<string[]>([]);
+
+	const selectColor = (value: string) => {
+		let arr = [...colorsSelected];
+		if (colorsSelected.includes(value)) {
+			arr = arr.filter((color) => color !== value);
+		} else {
+			arr.push(value);
+		}
+
+		setColorsSelected(arr);
+	};
+
 	return (
 		<section className="bg-white px-4 py-2 shadow-md rounded-xl md:w-1/2 h-fit">
 			<h3 className="text-3xl font-bold text-gray-600 mt-3">Filters</h3>
@@ -19,7 +35,8 @@ const Filters = ({ products }: FiltersProps) => {
 				<h4 className="text-xl font-semibold text-gray-500">Colors</h4>
 				<ColorFilter
 					colors={products.flatMap((item) => item.colors)}
-					selected={[]}
+					selected={colorsSelected}
+					selectColor={selectColor}
 				/>
 			</div>
 		</section>

@@ -6,9 +6,10 @@ import { productsColorMap } from '@/app/lib/models/Products';
 interface ColorFilterProps {
 	colors: string[];
 	selected: string[];
+	selectColor: (value: string) => void;
 }
 
-const ColorFilter = ({ colors, selected }: ColorFilterProps) => {
+const ColorFilter = ({ colors, selected, selectColor }: ColorFilterProps) => {
 	const [hoveredColor, setHoveredColor] = useState<string | null>(null);
 	return (
 		<div className="flex items-center flex-wrap space-x-2 mt-3 mb-3">
@@ -24,7 +25,9 @@ const ColorFilter = ({ colors, selected }: ColorFilterProps) => {
 							onMouseEnter={() => setHoveredColor(newId)}
 							onMouseLeave={() => setHoveredColor(null)}
 							className={`w-8 h-8 ${colorClass} rounded-full border-2 cursor-pointer transition-all duration-200 ${selected.includes(newId) ? 'border-gray-400 ring-2 ring-offset-1 ring-gray-400' : 'border-gray-300 hover:ring-2 hover:ring-offset-1 hover:ring-gray-300'}`}
-							onClick={(e) => {}}
+							onClick={(e) => {
+								selectColor(newId);
+							}}
 						/>
 
 						{hoveredColor === newId && (
