@@ -10,7 +10,7 @@ import { getFeaturedProducts } from './lib/services/productService';
 export default function Home() {
 	const products = getFeaturedProducts();
 	return (
-		<main className="min-h-screen pt-16">
+		<>
 			<section className="bg-white py-16 md:py-24">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-12">
 					<div className="md:w-1/2 text-center md:text-left">
@@ -108,6 +108,6 @@ export default function Home() {
 					</div>
 				</div>
 			</section>
-		</main>
+		</>
 	);
 }
