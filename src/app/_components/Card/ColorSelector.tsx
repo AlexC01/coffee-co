@@ -1,3 +1,5 @@
+import { productsColorMap } from '@/app/lib/models/Products';
+
 interface ColorSelectorProps {
 	colors: string[];
 	selected: number;
@@ -6,13 +8,6 @@ interface ColorSelectorProps {
 		value: number,
 	) => void;
 }
-const colorMap = {
-	'creamy-beige': 'bg-creamy-beige',
-	'baby-blue': 'bg-baby-blue',
-	'deep-blue': 'bg-deep-blue',
-	'forest-green': 'bg-forest-green',
-	'midnight-blue': 'bg-midnight-blue',
-};
 
 const ColorSelector = ({
 	colors,
@@ -20,12 +15,12 @@ const ColorSelector = ({
 	changeSelected,
 }: ColorSelectorProps) => {
 	return (
-		<div className="flex items-center space-x-2 mt-3 mb-3">
+		<div className="flex items-center flex-wrap space-x-2 mt-3 mb-3">
 			{colors.map((item, index) => {
 				const newId = item
 					.toLowerCase()
-					.replace(/\s/g, '-') as keyof typeof colorMap;
-				const colorClass = colorMap[newId] || 'bg-gray-200';
+					.replace(/\s/g, '-') as keyof typeof productsColorMap;
+				const colorClass = productsColorMap[newId] || 'bg-gray-200';
 				return (
 					<button
 						type="button"

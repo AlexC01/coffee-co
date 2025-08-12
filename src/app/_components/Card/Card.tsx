@@ -25,7 +25,7 @@ const Card = ({ title, price, images, colors, sizes }: CardsProps) => {
 	};
 
 	return (
-		<div className="w-full shadow-md rounded-b-lg bg-white relative cursor-pointer hover:shadow-xl transition-shadow duration-400">
+		<div className="w-full shadow-md rounded-b-lg bg-white relative cursor-pointer hover:shadow-xl transition-shadow duration-400 rounded-t-xl">
 			<div className="flex flex-col space-y-1 h-full relative ">
 				<Image
 					src={images[currentSelection]}
