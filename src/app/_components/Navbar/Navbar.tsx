@@ -1,6 +1,8 @@
 'use client';
 import { Menu, ShoppingCart, User } from 'lucide-react';
+import Link from 'next/link';
 import { useState } from 'react';
+import { routes } from '@/app/lib/models/Routes';
 
 const Navbar = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,26 +18,26 @@ const Navbar = () => {
 						</a>
 					</div>
 					<div className="hidden md:flex md:items-center text-lg justify-center md:space-x-6 font-semibold text-gray-700">
-						<a
-							href="/"
+						<Link
+							href={routes.home}
 							className="rounded-sm   hover:text-accent-500 transition delay-50"
 						>
 							Home
-						</a>
-						<a
-							href="/"
+						</Link>
+						<Link
+							href={routes.products}
 							className="rounded-sm   hover:text-accent-500 transition delay-50"
 						>
 							Products
-						</a>
-						<a
-							href="/"
+						</Link>
+						<Link
+							href={routes.about_us}
 							className="rounded-sm  hover:text-accent-500 transition delay-50"
 						>
 							About Us
-						</a>
+						</Link>
 						<a
-							href="/"
+							href={routes.contact}
 							className="rounded-sm   hover:text-accent-500 transition delay-50"
 						>
 							Contact
@@ -77,24 +79,24 @@ const Navbar = () => {
 			>
 				<hr className=" opacity-10 " />
 				<div className="pt-2 pb-3 space-y-1 sm:px-3">
-					<a
-						href="/"
+					<Link
+						href={routes.home}
 						className="text-gray-900 block rounded-lg px-3 py-2 text-base font-medium hover:bg-gray-100 transition-colors"
 					>
 						Home
-					</a>
-					<a
-						href="/"
+					</Link>
+					<Link
+						href={routes.products}
 						className="text-gray-900 block rounded-lg px-3 py-2 text-base font-medium hover:bg-gray-100 transition-colors"
 					>
 						Products
-					</a>
-					<a
-						href="/"
+					</Link>
+					<Link
+						href={routes.about_us}
 						className="text-gray-900 block rounded-lg px-3 py-2 text-base font-medium hover:bg-gray-100 transition-colors"
 					>
 						About
-					</a>
+					</Link>
 					<div className="border-t border-gray-200 mt-2 pt-2">
 						<a
 							href="/"
