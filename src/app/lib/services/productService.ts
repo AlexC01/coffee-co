@@ -2,6 +2,7 @@ import {
 	collection,
 	type DocumentData,
 	getDocs,
+	limit,
 	type QuerySnapshot,
 	query,
 	where,
@@ -30,7 +31,25 @@ const transformData = (
 export const getFeaturedProducts = async () => {
 	try {
 		const productsCollection = collection(db, 'products');
-		const q = query(productsCollection, where('isFeatured', '==', true));
+		const q = query(
+			productsCollection,
+			where('isFeatured', '==', true),
+			limit(4),
+		);
+
+		const querySnapshot = await getDocs(q);
+
+		return transformData(querySnapshot);
+	} catch (err) {
+		console.error('Error while fetching featured products', err);
+		return [];
+	}
+};
+
+export const getAllProducts = async () => {
+	try {
+		const productsCollection = collection(db, 'products');
+		const q = query(productsCollection);
 
 		const querySnapshot = await getDocs(q);
 
