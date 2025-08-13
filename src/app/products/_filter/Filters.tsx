@@ -10,6 +10,31 @@ interface FiltersProps {
 }
 
 const Filters = ({ products }: FiltersProps) => {
+	const [minValue, setMinValue] = useState('0');
+	const [maxValue, setMaxValue] = useState('0');
+
+	const [maxCap, setMaxCap] = useState(10);
+
+	const updatePriceFilter = (value: string, priceType: 'min' | 'max') => {
+		let newVal = value;
+		const parsedValue = parseFloat(value);
+
+		if (parsedValue < 0) newVal = '0';
+		if (parsedValue > maxCap) newVal = maxCap.toString();
+
+		if (priceType === 'min') {
+			setMinValue(newVal);
+
+			if (parseFloat(newVal) > parseFloat(maxValue) && maxValue !== '')
+				setMaxValue(newVal);
+		} else {
+			setMaxValue(newVal);
+
+			if (parseFloat(newVal) < parseFloat(minValue) && minValue !== '')
+				setMinValue(newVal);
+		}
+	};
+
 	const [colorsSelected, setColorsSelected] = useState<string[]>([]);
 
 	const selectColor = (value: string) => {
@@ -29,7 +54,11 @@ const Filters = ({ products }: FiltersProps) => {
 			<hr className="mt-2" />
 			<div className="mt-4">
 				<h4 className="text-xl font-semibold text-gray-500 ">Price</h4>
-				<PriceRange value={2} />
+				<PriceRange
+					min_value={minValue}
+					max_value={maxValue}
+					updatePriceFilter={updatePriceFilter}
+				/>
 			</div>
 			<div className="mt-6">
 				<h4 className="text-xl font-semibold text-gray-500">Colors</h4>
