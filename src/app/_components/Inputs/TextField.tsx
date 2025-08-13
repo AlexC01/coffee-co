@@ -1,0 +1,49 @@
+interface TextFieldProps {
+	placeholder: string;
+	id: string;
+	value: string;
+	onChange: (value: string) => void;
+	label?: string;
+	icon?: React.ReactElement;
+}
+
+const TextField = ({
+	id,
+	placeholder,
+	value,
+	onChange,
+	label,
+	icon,
+}: TextFieldProps) => {
+	return (
+		<div>
+			{label && (
+				<label
+					className="text-gray-500 text-sm font-semibold mb-1"
+					htmlFor={id}
+				>
+					{label}
+				</label>
+			)}
+			<div className="relative">
+				<input
+					type="text"
+					id={id}
+					className="w-full rounded border-gray-300 bg-white pe-10 shadow-sm pl-2 py-1 border-1"
+					onChange={(e) => onChange(e.target.value)}
+					value={value}
+					placeholder={placeholder}
+				/>
+				{icon && (
+					<span
+						className={`absolute inset-y-0 right-2 grid w-8 place-content-center`}
+					>
+						{icon}
+					</span>
+				)}
+			</div>
+		</div>
+	);
+};
+
+export default TextField;
