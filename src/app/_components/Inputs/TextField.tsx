@@ -29,7 +29,7 @@ const TextField = ({
 				<input
 					type="text"
 					id={id}
-					className="w-full rounded border-gray-300 bg-white pe-10 shadow-sm pl-2 py-1 border-1"
+					className="w-full rounded border-gray-300 bg-white  shadow-sm pl-3 py-2 border-1"
 					onChange={(e) => onChange(e.target.value)}
 					value={value}
 					placeholder={placeholder}
