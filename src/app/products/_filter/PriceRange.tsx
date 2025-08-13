@@ -1,6 +1,6 @@
 'use client';
 
-import NumberInput from './NumberInput';
+import NumberInput from '@/app/_components/Inputs/NumberInput';
 
 interface PriceRangeProps {
 	min_value: string;

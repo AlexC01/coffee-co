@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import ColorFilter from '@/app/_components/Inputs/ColorFilter';
-import PriceRange from '@/app/_components/Inputs/PriceRange';
 import type { ProductInterface } from '@/app/lib/models/Products';
+import PriceRange from './PriceRange';
 
 interface FiltersProps {
 	products: ProductInterface[];
