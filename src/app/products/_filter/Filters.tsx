@@ -1,15 +1,20 @@
+/** biome-ignore-all lint/correctness/useExhaustiveDependencies: <explanation> */
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ColorFilter from '@/app/_components/Inputs/ColorFilter';
+import useDebounce from '@/app/hooks/useDebounce';
+import type { ColorsInterfaceResponse } from '@/app/lib/models/Colors';
 import type { ProductInterface } from '@/app/lib/models/Products';
 import PriceRange from './PriceRange';
 
 interface FiltersProps {
 	products: ProductInterface[];
+	colors: ColorsInterfaceResponse[];
+	updateParams: (option: string, value: string) => void;
 }
 
-const Filters = ({ products }: FiltersProps) => {
+const Filters = ({ products, colors, updateParams }: FiltersProps) => {
 	const [minValue, setMinValue] = useState('0');
 	const [maxValue, setMaxValue] = useState('0');
 
@@ -36,20 +41,27 @@ const Filters = ({ products }: FiltersProps) => {
 	};
 
 	const [colorsSelected, setColorsSelected] = useState<string[]>([]);
+	const debouncedColorSelect = useDebounce({
+		value: colorsSelected.join(','),
+		delay: 700,
+	});
+
+	useEffect(() => {
+		if (debouncedColorSelect) updateParams('colors', debouncedColorSelect);
+		else updateParams('colors', '');
+	}, [debouncedColorSelect]);
 
 	const selectColor = (value: string) => {
 		let arr = [...colorsSelected];
-		if (colorsSelected.includes(value)) {
+		if (colorsSelected.includes(value))
 			arr = arr.filter((color) => color !== value);
-		} else {
-			arr.push(value);
-		}
+		else arr.push(value);
 
 		setColorsSelected(arr);
 	};
 
 	return (
-		<section className="bg-white px-4 py-2 shadow-md rounded-xl md:w-1/2 h-fit">
+		<section className="bg-white px-4 py-2 shadow-md rounded-xl md:w-full h-fit">
 			<h3 className="text-3xl font-bold text-gray-600 mt-3">Filters</h3>
 			<hr className="mt-2" />
 			<div className="mt-4">
@@ -63,7 +75,7 @@ const Filters = ({ products }: FiltersProps) => {
 			<div className="mt-6">
 				<h4 className="text-xl font-semibold text-gray-500">Colors</h4>
 				<ColorFilter
-					colors={products.flatMap((item) => item.colors)}
+					colors={colors}
 					selected={colorsSelected}
 					selectColor={selectColor}
 				/>
