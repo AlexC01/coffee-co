@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import type { ColorsInterfaceResponse } from '@/app/lib/models/Colors';
 import { productsColorMap } from '@/app/lib/models/Products';
 
 interface ColorFilterProps {
-	colors: string[];
+	colors: ColorsInterfaceResponse[];
 	selected: string[];
 	selectColor: (value: string) => void;
 }
@@ -13,10 +14,8 @@ const ColorFilter = ({ colors, selected, selectColor }: ColorFilterProps) => {
 	const [hoveredColor, setHoveredColor] = useState<string | null>(null);
 	return (
 		<div className="flex items-center flex-wrap space-x-2 mt-3 mb-3">
-			{colors.map((color, index) => {
-				const newId = color
-					.toLowerCase()
-					.replace(/\s/g, '-') as keyof typeof productsColorMap;
+			{colors.map((color) => {
+				const newId = color.id as keyof typeof productsColorMap;
 				const colorClass = productsColorMap[newId] || 'bg-gray-200';
 				return (
 					<div key={newId} className="relative">
@@ -32,7 +31,7 @@ const ColorFilter = ({ colors, selected, selectColor }: ColorFilterProps) => {
 
 						{hoveredColor === newId && (
 							<span className="absolute -left-4 -top-8 bg-gray-800 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap z-50">
-								{color}
+								{color.name}
 							</span>
 						)}
 					</div>
