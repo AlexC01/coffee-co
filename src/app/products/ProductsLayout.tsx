@@ -1,7 +1,8 @@
 'use client';
 
+import { DocumentSnapshot } from 'firebase/firestore';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import Card from '../_components/Card/Card';
 import SkeletonCard from '../_components/Card/SkeletonCard';
 import { ColorsInterfaceResponse } from '../lib/models/Colors';
@@ -9,19 +10,39 @@ import type {
 	ProductInterface,
 	ProductsFiltersInterface,
 } from '../lib/models/Products';
+import { getAllProducts } from '../lib/services/productService';
 import Filters from './_filter/Filters';
 import TopFilters from './_filter/TopFilters';
 
 interface ProductsLayoutProps {
-	products: ProductInterface[];
-	params: ProductsFiltersInterface;
 	colors: ColorsInterfaceResponse[];
+	initialProducts: ProductInterface[];
+	initialLastVisibleId: string | null | undefined;
+	params: {
+		[key: string]: string | string[] | undefined;
+	};
 }
 
-const ProductsLayout = ({ products, params, colors }: ProductsLayoutProps) => {
+const ProductsLayout = ({
+	initialProducts,
+	colors,
+	initialLastVisibleId,
+	params,
+}: ProductsLayoutProps) => {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const [isPending, startTransition] = useTransition();
+
+	const [products, setProducts] = useState(initialProducts);
+	const [lastVisibleId, setLastVisibleId] = useState(initialLastVisibleId);
+	const [loading, setLoading] = useState(false);
+	const [hasMore, setHasMore] = useState(initialProducts.length === 5);
+
+	useEffect(() => {
+		setProducts(initialProducts);
+		setLastVisibleId(initialLastVisibleId);
+		setHasMore(initialProducts.length === 5);
+	}, [initialProducts, initialLastVisibleId]);
 
 	const updateParams = (option: string, value: string) => {
 		startTransition(() => {
@@ -33,9 +54,17 @@ const ProductsLayout = ({ products, params, colors }: ProductsLayoutProps) => {
 		});
 	};
 
-	useEffect(() => {
-		console.log(params);
-	}, [params]);
+	const handleMoreProducts = async () => {
+		setLoading(true);
+		const { products: newProducts, lastVisibleId: newLastVisibleId } =
+			await getAllProducts(params, lastVisibleId);
+
+		setProducts((prev) => [...prev, ...newProducts]);
+		setLastVisibleId(newLastVisibleId);
+		setLoading(false);
+
+		if (newProducts.length < 5) setHasMore(false);
+	};
 
 	return (
 		<section className="mt-10 flex flex-grow flex-col md:grid md:grid-cols-3  gap-8">
@@ -72,6 +101,18 @@ const ProductsLayout = ({ products, params, colors }: ProductsLayoutProps) => {
 								/>
 							))
 						)}
+					</div>
+				)}
+				{hasMore && (
+					<div className="mt-10 text-center">
+						<button
+							type="button"
+							disabled={loading}
+							className={`bg-white rounded-full  p-4 font-semibold leading-1.5 shadow-lg cursor-pointer transition-all duration-300 hover:shadow-sm ${loading ? 'animate-pulse' : ''}`}
+							onClick={handleMoreProducts}
+						>
+							Load More
+						</button>
 					</div>
 				)}
 			</div>
