@@ -20,14 +20,11 @@ const Filters = ({ products, colors, updateParams }: FiltersProps) => {
 	const [minValue, setMinValue] = useState('0');
 	const [maxValue, setMaxValue] = useState('0');
 
-	const [maxCap, setMaxCap] = useState(10);
-
 	const updatePriceFilter = (value: string, priceType: 'min' | 'max') => {
 		let newVal = value;
 		const parsedValue = parseFloat(value);
 
 		if (parsedValue < 0) newVal = '0';
-		if (parsedValue > maxCap) newVal = maxCap.toString();
 
 		if (priceType === 'min') {
 			setMinValue(newVal);

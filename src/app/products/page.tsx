@@ -8,7 +8,8 @@ const Products = async ({
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
 	const params = await searchParams;
-	const products = await getAllProducts(params);
+	const { products: initialProducts, lastVisibleId: initialLastVisibleId } =
+		await getAllProducts(params);
 	const colors = await getAllColors();
 	return (
 		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
@@ -21,7 +22,12 @@ const Products = async ({
 					accessories.
 				</p>
 			</div>
-			<ProductsLayout products={products} params={params} colors={colors} />
+			<ProductsLayout
+				initialProducts={initialProducts}
+				colors={colors}
+				initialLastVisibleId={initialLastVisibleId}
+				params={params}
+			/>
 		</div>
 	);
 };
