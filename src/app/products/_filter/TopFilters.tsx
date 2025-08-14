@@ -10,6 +10,8 @@ import useDebounce from '@/app/hooks/useDebounce';
 
 interface TopFiltersProps {
 	updateParams: (option: string, value: string) => void;
+	search: string;
+	updateSearch: (value: string) => void;
 }
 
 const sortByOptions = [
@@ -18,13 +20,12 @@ const sortByOptions = [
 	{ value: 'price-desc', label: 'Price High to Low' },
 ];
 
-const TopFilters = ({ updateParams }: TopFiltersProps) => {
+const TopFilters = ({
+	updateParams,
+	search,
+	updateSearch,
+}: TopFiltersProps) => {
 	const searchParams = useSearchParams();
-
-	const [search, setSearch] = useState<string>(
-		searchParams.get('search') || '',
-	);
-	const updateSearch = (value: string) => setSearch(value);
 
 	const debouncedSearchTerm = useDebounce({ value: search, delay: 500 });
 

@@ -38,6 +38,43 @@ const ProductsLayout = ({
 	const [loading, setLoading] = useState(false);
 	const [hasMore, setHasMore] = useState(initialProducts.length === 5);
 
+	const [minValue, setMinValue] = useState('0');
+	const [maxValue, setMaxValue] = useState('0');
+
+	const updatePriceFilter = (value: string, priceType: 'min' | 'max') => {
+		let newVal = value;
+		const parsedValue = parseFloat(value);
+
+		if (parsedValue < 0) newVal = '0';
+
+		if (priceType === 'min') {
+			setMinValue(newVal);
+
+			if (parseFloat(newVal) > parseFloat(maxValue) && maxValue !== '')
+				setMaxValue('0');
+		} else {
+			setMaxValue(newVal);
+
+			if (parseFloat(newVal) < parseFloat(minValue) && minValue !== '')
+				setMinValue(newVal);
+		}
+	};
+
+	const [colorsSelected, setColorsSelected] = useState<string[]>([]);
+	const selectColor = (value: string) => {
+		let arr = [...colorsSelected];
+		if (colorsSelected.includes(value))
+			arr = arr.filter((color) => color !== value);
+		else arr.push(value);
+
+		setColorsSelected(arr);
+	};
+
+	const [search, setSearch] = useState<string>(
+		searchParams.get('search') || '',
+	);
+	const updateSearch = (value: string) => setSearch(value);
+
 	useEffect(() => {
 		setProducts(initialProducts);
 		setLastVisibleId(initialLastVisibleId);
@@ -66,15 +103,32 @@ const ProductsLayout = ({
 		if (newProducts.length < 5) setHasMore(false);
 	};
 
+	const clearFilters = () => {
+		router.push('/products');
+		setMinValue('0');
+		setMaxValue('0');
+		setSearch('');
+		setColorsSelected([]);
+	};
+
 	return (
 		<section className="mt-10 flex flex-grow flex-col md:grid md:grid-cols-3  gap-8">
 			<Filters
-				products={products}
 				colors={colors}
 				updateParams={updateParams}
+				updatePriceFilter={updatePriceFilter}
+				minValue={minValue}
+				maxValue={maxValue}
+				colorsSelected={colorsSelected}
+				selectColor={selectColor}
+				clearFilters={clearFilters}
 			/>
 			<div className="md:col-span-2">
-				<TopFilters updateParams={updateParams} />
+				<TopFilters
+					updateParams={updateParams}
+					search={search}
+					updateSearch={updateSearch}
+				/>
 				{isPending && (
 					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 						<SkeletonCard />
