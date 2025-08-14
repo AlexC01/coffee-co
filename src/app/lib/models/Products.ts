@@ -26,6 +26,14 @@ export interface ProductInterface {
 	createdAt: string;
 }
 
+export interface ProductsFiltersInterface {
+	colors?: string;
+	price_min?: string;
+	price_max?: string;
+	search?: string;
+	sortBy?: string;
+}
+
 export const productsColorMap = {
 	'creamy-beige': 'bg-creamy-beige',
 	'baby-blue': 'bg-baby-blue',
