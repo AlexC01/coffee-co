@@ -65,13 +65,11 @@ export const getAllProducts = async (
 				q = query(q, orderBy('price', sortBy === 'price-asc' ? 'asc' : 'desc'));
 		}
 
-		if (price_min) q = query(q, where('price', '>=', price_min));
-		if (price_max) q = query(q, where('price', '<=', price_max));
+		if (price_min) q = query(q, where('price', '>=', Number(price_min)));
+		if (price_max) q = query(q, where('price', '<=', Number(price_max)));
 
 		if (colors)
 			q = query(q, where('colors', 'array-contains-any', colors.split(',')));
-
-		console.log(colors);
 
 		if (search) q = query(q, where('name', '==', search));
 

@@ -31,7 +31,7 @@ const Filters = ({ products, colors, updateParams }: FiltersProps) => {
 			setMinValue(newVal);
 
 			if (parseFloat(newVal) > parseFloat(maxValue) && maxValue !== '')
-				setMaxValue(newVal);
+				setMaxValue('0');
 		} else {
 			setMaxValue(newVal);
 
@@ -39,6 +39,15 @@ const Filters = ({ products, colors, updateParams }: FiltersProps) => {
 				setMinValue(newVal);
 		}
 	};
+
+	const debouncedPriceMin = useDebounce({
+		value: minValue,
+		delay: 700,
+	});
+	const debouncedPriceMax = useDebounce({
+		value: maxValue,
+		delay: 700,
+	});
 
 	const [colorsSelected, setColorsSelected] = useState<string[]>([]);
 	const debouncedColorSelect = useDebounce({
@@ -50,6 +59,18 @@ const Filters = ({ products, colors, updateParams }: FiltersProps) => {
 		if (debouncedColorSelect) updateParams('colors', debouncedColorSelect);
 		else updateParams('colors', '');
 	}, [debouncedColorSelect]);
+
+	useEffect(() => {
+		if (debouncedPriceMin && debouncedPriceMin !== '0')
+			updateParams('price_min', debouncedPriceMin);
+		else updateParams('price_min', '');
+	}, [debouncedPriceMin]);
+
+	useEffect(() => {
+		if (debouncedPriceMax && debouncedPriceMax !== '0')
+			updateParams('price_max', debouncedPriceMax);
+		else updateParams('price_max', '');
+	}, [debouncedPriceMax]);
 
 	const selectColor = (value: string) => {
 		let arr = [...colorsSelected];
