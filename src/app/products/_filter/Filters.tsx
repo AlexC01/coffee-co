@@ -1,6 +1,7 @@
 /** biome-ignore-all lint/correctness/useExhaustiveDependencies: <explanation> */
 'use client';
 
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ColorFilter from '@/app/_components/Inputs/ColorFilter';
 import useDebounce from '@/app/hooks/useDebounce';
@@ -15,6 +16,7 @@ interface FiltersProps {
 }
 
 const Filters = ({ products, colors, updateParams }: FiltersProps) => {
+	const searchParams = useSearchParams();
 	const [minValue, setMinValue] = useState('0');
 	const [maxValue, setMaxValue] = useState('0');
 
@@ -57,19 +59,22 @@ const Filters = ({ products, colors, updateParams }: FiltersProps) => {
 
 	useEffect(() => {
 		if (debouncedColorSelect) updateParams('colors', debouncedColorSelect);
-		else updateParams('colors', '');
+		else if (!debouncedColorSelect && searchParams.get('colors'))
+			updateParams('colors', '');
 	}, [debouncedColorSelect]);
 
 	useEffect(() => {
 		if (debouncedPriceMin && debouncedPriceMin !== '0')
 			updateParams('price_min', debouncedPriceMin);
-		else updateParams('price_min', '');
+		else if (!debouncedPriceMin && searchParams.get('price_min'))
+			updateParams('price_min', '');
 	}, [debouncedPriceMin]);
 
 	useEffect(() => {
 		if (debouncedPriceMax && debouncedPriceMax !== '0')
 			updateParams('price_max', debouncedPriceMax);
-		else updateParams('price_max', '');
+		else if (!debouncedPriceMax && searchParams.get('price_max'))
+			updateParams('price_max', '');
 	}, [debouncedPriceMax]);
 
 	const selectColor = (value: string) => {

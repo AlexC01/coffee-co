@@ -30,16 +30,13 @@ const TopFilters = ({ updateParams }: TopFiltersProps) => {
 
 	useEffect(() => {
 		if (debouncedSearchTerm) updateParams('search', debouncedSearchTerm);
-		else updateParams('search', '');
+		else if (!debouncedSearchTerm && searchParams.get('search'))
+			updateParams('search', '');
 	}, [debouncedSearchTerm]);
 
-	const [sortBy, setSortBy] = useState<string>(
-		searchParams.get('sortBy') || '',
-	);
-	const updateSortBy = (value: string) => {
-		setSortBy(value);
-		updateParams('sortBy', value);
-	};
+	const sortBy = searchParams.get('sortBy') || '';
+
+	const updateSortBy = (value: string) => updateParams('sortBy', value);
 
 	return (
 		<div className="flex flex-row items-center justify-between mb-5">
