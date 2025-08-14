@@ -1,12 +1,14 @@
 import {
 	collection,
 	type DocumentData,
+	doc,
+	getDoc,
 	getDocs,
 	limit,
-	OrderByDirection,
 	orderBy,
 	type QuerySnapshot,
 	query,
+	startAfter,
 	where,
 } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -51,11 +53,12 @@ export const getFeaturedProducts = async () => {
 
 export const getAllProducts = async (
 	searchParams: ProductsFiltersInterface,
+	lastVisibleId: string | null = null,
 ) => {
 	try {
 		const productsCollection = collection(db, 'products');
 
-		let q = query(productsCollection, limit(10));
+		let q = query(productsCollection, limit(5));
 
 		const { sortBy, price_max, price_min, search, colors } = searchParams;
 
@@ -73,11 +76,24 @@ export const getAllProducts = async (
 
 		if (search) q = query(q, where('name', '==', search));
 
+		if (lastVisibleId) {
+			const lastVisibleDoc = await getDoc(doc(db, 'products', lastVisibleId));
+			q = query(q, startAfter(lastVisibleDoc));
+		}
+
 		const querySnapshot = await getDocs(q);
 
-		return transformData(querySnapshot);
+		const newData = transformData(querySnapshot);
+
+		return {
+			products: newData,
+			lastVisibleId:
+				querySnapshot.docs.length > 0
+					? querySnapshot.docs[querySnapshot.docs.length - 1].id
+					: null,
+		};
 	} catch (err) {
 		console.error('Error while fetching featured products', err);
-		return [];
+		return { products: [], lastVisible: null };
 	}
 };
