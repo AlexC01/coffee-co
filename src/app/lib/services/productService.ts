@@ -97,3 +97,22 @@ export const getAllProducts = async (
 		return { products: [], lastVisible: null };
 	}
 };
+
+export const getSingleProduct = async (slug: string) => {
+	try {
+		const productsCollection = collection(db, 'products');
+		const q = query(productsCollection, where('slug', '==', slug), limit(1));
+
+		const querySnapshot = await getDocs(q);
+
+		if (!querySnapshot.empty) {
+			const transform = transformData(querySnapshot);
+			return transform[0];
+		}
+
+		return null;
+	} catch (err) {
+		console.error('Error while fetching featured products', err);
+		return null;
+	}
+};
