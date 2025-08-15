@@ -152,6 +152,7 @@ const ProductsLayout = ({
 									images={product.images}
 									colors={product.colors}
 									sizes={product.sizes}
+									slug={product.slug}
 								/>
 							))
 						)}

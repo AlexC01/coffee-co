@@ -3,10 +3,7 @@ import { productsColorMap } from '@/app/lib/models/Products';
 interface ColorSelectorProps {
 	colors: string[];
 	selected: number;
-	changeSelected: (
-		e: React.MouseEvent<HTMLButtonElement>,
-		value: number,
-	) => void;
+	changeSelected: (value: number) => void;
 }
 
 const ColorSelector = ({
@@ -14,6 +11,14 @@ const ColorSelector = ({
 	selected,
 	changeSelected,
 }: ColorSelectorProps) => {
+	const handleColorClick = (
+		e: React.MouseEvent<HTMLButtonElement>,
+		value: number,
+	) => {
+		e.preventDefault();
+		changeSelected(value);
+	};
+
 	return (
 		<div className="flex items-center flex-wrap space-x-2 mt-3 mb-3">
 			{colors.map((item, index) => {
@@ -26,7 +31,7 @@ const ColorSelector = ({
 						type="button"
 						key={newId}
 						className={`w-5 h-5 ${colorClass} rounded-full border-2 cursor-pointer transition-all duration-200 ${selected === index ? 'border-gray-400 ring-2 ring-offset-1 ring-gray-400' : 'border-gray-300 hover:ring-2 hover:ring-offset-1 hover:ring-gray-300'}`}
-						onClick={(e) => changeSelected(e, index)}
+						onClick={(e) => handleColorClick(e, index)}
 					/>
 				);
 			})}

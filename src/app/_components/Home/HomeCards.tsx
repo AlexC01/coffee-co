@@ -1,5 +1,5 @@
 'use client';
-import { use, useState } from 'react';
+import { use } from 'react';
 import type { ProductInterface } from '@/app/lib/models/Products';
 import Card from '../Card/Card';
 
@@ -22,6 +22,7 @@ const HomeCards = ({ featuredProd }: HomeCardsProps) => {
 					images={product.images}
 					colors={product.colors}
 					sizes={product.sizes}
+					slug={product.slug}
 				/>
 			))}
 		</>
