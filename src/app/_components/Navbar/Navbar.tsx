@@ -13,9 +13,9 @@ const Navbar = () => {
 			<div className="max-w-7xl mx-auto  px-4 sm:px-6 lg:px-8">
 				<div className="flex justify-between items-center  h-16">
 					<div className="flex-shrink-0 flex items-center">
-						<a href="/" className="text-2xl font-bold">
+						<Link href="/" className="text-2xl font-bold">
 							Coffee Co.
-						</a>
+						</Link>
 					</div>
 					<div className="hidden md:flex md:items-center text-lg justify-center md:space-x-6 font-semibold text-gray-700">
 						<Link
