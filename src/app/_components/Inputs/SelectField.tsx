@@ -2,9 +2,15 @@ interface SelectFieldProps {
 	value: string;
 	onChange: (value: string) => void;
 	options: { value: string; label: string }[];
+	placeholder: string;
 }
 
-const SelectField = ({ value, onChange, options }: SelectFieldProps) => {
+const SelectField = ({
+	value,
+	onChange,
+	options,
+	placeholder,
+}: SelectFieldProps) => {
 	return (
 		<select
 			value={value}
@@ -12,7 +18,7 @@ const SelectField = ({ value, onChange, options }: SelectFieldProps) => {
 			onChange={(e) => onChange(e.target.value)}
 		>
 			<option value="" disabled>
-				Sort By
+				{placeholder}
 			</option>
 			{options.map((option) => (
 				<option key={option.value} value={option.value}>

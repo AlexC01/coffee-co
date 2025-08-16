@@ -52,6 +52,7 @@ const TopFilters = ({
 			</div>
 			<div className="w-1/4">
 				<SelectField
+					placeholder="Sort By"
 					value={sortBy}
 					onChange={updateSortBy}
 					options={sortByOptions}
