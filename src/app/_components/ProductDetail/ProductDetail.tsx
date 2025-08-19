@@ -39,7 +39,7 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
 					/>
 				</div>
 			</div>
-			<div className="md:w-1/2 text-center md:text-left">
+			<div className="md:w-1/2 text-center sm:text-left">
 				<h2 className="text-2xl sm:text-4xl md:text-5xl font-bold leading-tight">
 					{product.name}
 				</h2>
@@ -47,7 +47,7 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
 					<StarRating rating={4} />
 				</div>
 				<hr className="mt-2 text-gray-400" />
-				<span className="block font-semibold text-gray-500 text-lg md:text-3xl mt-4">
+				<span className="block font-semibold text-gray-500 text-lg sm:text-3xl mt-4">
 					${Number(product.price).toFixed(2)}
 				</span>
 				<div className="mt-2">
@@ -58,7 +58,7 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
 						bigger
 					/>
 				</div>
-				<p className="text-lg text-gray-600 max-w-lg mx-auto md:mx-0 mt-7">
+				<p className="text-lg text-gray-600 max-w-lg mx-auto sm:mx-0  mt-7">
 					{product.description}
 				</p>
 				<div className="mt-8 w-1/4">
@@ -71,7 +71,7 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
 						placeholder="Size"
 					/>
 				</div>
-				<div className="flex items-center mt-10 gap-5 flex-col md:flex-row">
+				<div className="flex items-center mt-10 gap-5 flex-col sm:flex-row">
 					<button
 						type="button"
 						disabled={sizeSelected === ''}
