@@ -15,7 +15,9 @@
 		"next": "15.4.5",
 		"postcss": "^8.5.6",
 		"react": "19.1.0",
-		"react-dom": "19.1.0"
+		"react-dom": "19.1.0",
+		"react-error-boundary": "^6.0.0",
+		"zod": "^4.0.17"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.1.3",
