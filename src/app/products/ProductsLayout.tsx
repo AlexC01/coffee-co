@@ -1,15 +1,11 @@
 'use client';
 
-import { DocumentSnapshot } from 'firebase/firestore';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
 import Card from '../_components/Card/Card';
 import SkeletonCard from '../_components/Card/SkeletonCard';
-import { ColorsInterfaceResponse } from '../lib/models/Colors';
-import type {
-	ProductInterface,
-	ProductsFiltersInterface,
-} from '../lib/models/Products';
+import type { ColorsInterfaceResponse } from '../lib/models/Colors';
+import type { ProductInterface } from '../lib/models/Products';
 import { getAllProducts } from '../lib/services/productService';
 import Filters from './_filter/Filters';
 import TopFilters from './_filter/TopFilters';
@@ -19,7 +15,11 @@ interface ProductsLayoutProps {
 	initialProducts: ProductInterface[];
 	initialLastVisibleId: string | null | undefined;
 	params: {
-		[key: string]: string | string[] | undefined;
+		sortBy: 'featured' | 'price-asc' | 'price-desc';
+		search?: string | undefined;
+		color?: string | undefined;
+		minPrice?: number | undefined;
+		maxPrice?: number | undefined;
 	};
 }
 

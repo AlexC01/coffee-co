@@ -1,3 +1,4 @@
+import { productFilterSchema } from '../lib/schemas/productFilterSchema';
 import { getAllColors } from '../lib/services/colorService';
 import { getAllProducts } from '../lib/services/productService';
 import ProductsLayout from './ProductsLayout';
@@ -8,8 +9,18 @@ const Products = async ({
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
 	const params = await searchParams;
+	const result = productFilterSchema.safeParse(params);
+	if (!result.success) {
+		return (
+			<div className="text-center p-16">
+				<h2 className="text-xl text-red-600">Invalid URL Parameters</h2>
+			</div>
+		);
+	}
+
+	const validatedParams = result.data;
 	const { products: initialProducts, lastVisibleId: initialLastVisibleId } =
-		await getAllProducts(params);
+		await getAllProducts(validatedParams);
 	const colors = await getAllColors();
 	return (
 		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
@@ -26,7 +37,7 @@ const Products = async ({
 				initialProducts={initialProducts}
 				colors={colors}
 				initialLastVisibleId={initialLastVisibleId}
-				params={params}
+				params={validatedParams}
 			/>
 		</div>
 	);
