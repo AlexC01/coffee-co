@@ -1,10 +1,12 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { Suspense } from 'react';
 import heroImage from '@/../public/images/hero-mugs.webp';
 import BrandCarousel from './_components/BrandCarousel/BrandCarousel';
 import SkeletonCard from './_components/Card/SkeletonCard';
 import HomeCards from './_components/Home/HomeCards';
 import ReviewCard from './_components/ReviewCard/ReviewCard';
+import { routes } from './lib/models/Routes';
 import { getFeaturedProducts } from './lib/services/productService';
 
 export default function Home() {
@@ -21,12 +23,12 @@ export default function Home() {
 							Discover our curated collection of artisan coffee mugs designed
 							for modern living.
 						</h4>
-						<a
-							href="/"
+						<Link
+							href={routes.products}
 							className="inline-block mt-8 bg-accent-500 rounded-full text-center text-white text-lg px-8 py-3 font-bold shadow-lg hover:bg-accent-600 transition duration-300"
 						>
 							Shop the Collection
-						</a>
+						</Link>
 					</div>
 					<div className=" w-full md:w-1/2 mx-auto flex items-center justify-center">
 						<Image

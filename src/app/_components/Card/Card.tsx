@@ -22,7 +22,7 @@ const Card = ({ title, price, images, colors, sizes, slug }: CardsProps) => {
 	const updateSelection = (value: number) => setCurrentSelection(value);
 
 	return (
-		<Link href={`${routes.products}/${slug}`}>
+		<Link href={`${routes.products}/${slug}`} prefetch={false}>
 			<div className="w-full shadow-md rounded-b-lg bg-white relative cursor-pointer hover:shadow-xl transition-shadow duration-400 rounded-t-xl">
 				<div className="flex flex-col space-y-1 h-full relative ">
 					<Image
