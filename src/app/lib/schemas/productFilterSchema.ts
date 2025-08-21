@@ -3,8 +3,8 @@ import { z } from 'zod';
 export const productFilterSchema = z
 	.object({
 		search: z.string().optional(),
-		color: z.string().optional(),
-		sortBy: z.enum(['featured', 'price-asc', 'price-desc']),
+		colors: z.string().optional(),
+		sortBy: z.enum(['featured', 'price-asc', 'price-desc']).optional(),
 		minPrice: z.coerce.number().min(0).optional(),
 		maxPrice: z.coerce.number().min(0).optional(),
 	})

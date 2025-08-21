@@ -15,9 +15,9 @@ interface ProductsLayoutProps {
 	initialProducts: ProductInterface[];
 	initialLastVisibleId: string | null | undefined;
 	params: {
-		sortBy: 'featured' | 'price-asc' | 'price-desc';
 		search?: string | undefined;
-		color?: string | undefined;
+		colors?: string | undefined;
+		sortBy?: 'featured' | 'price-asc' | 'price-desc' | undefined;
 		minPrice?: number | undefined;
 		maxPrice?: number | undefined;
 	};
