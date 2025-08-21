@@ -5,6 +5,7 @@ interface TextFieldProps {
 	onChange: (value: string) => void;
 	label?: string;
 	icon?: React.ReactElement;
+	type?: string;
 }
 
 const TextField = ({
@@ -14,6 +15,7 @@ const TextField = ({
 	onChange,
 	label,
 	icon,
+	type = 'text',
 }: TextFieldProps) => {
 	return (
 		<div>
@@ -25,9 +27,9 @@ const TextField = ({
 					{label}
 				</label>
 			)}
-			<div className="relative">
+			<div className="relative mt-2">
 				<input
-					type="text"
+					type={type}
 					id={id}
 					className="w-full rounded border-gray-300 bg-white  shadow-sm pl-3 py-2 border-1"
 					onChange={(e) => onChange(e.target.value)}

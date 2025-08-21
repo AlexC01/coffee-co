@@ -3,4 +3,5 @@ export const routes = {
 	about_us: '/about-us',
 	contact: '/contact',
 	home: '/',
+	account: '/account',
 };

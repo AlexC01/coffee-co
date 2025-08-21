@@ -13,7 +13,7 @@ export default function Home() {
 	const products = getFeaturedProducts();
 	return (
 		<>
-			<section className="bg-white py-16 md:py-24">
+			<section className="bg-white py-20 md:py-32">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-12">
 					<div className="md:w-1/2 text-center md:text-left">
 						<h2 className="text-2xl sm:text-4xl md:text-5xl font-bold leading-tight">
