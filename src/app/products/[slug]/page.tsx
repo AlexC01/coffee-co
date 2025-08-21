@@ -13,7 +13,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
 
 	if (!product) notFound();
 	return (
-		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 pt-14 pb-16">
+		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 pt-28 pb-16">
 			<nav aria-label="BreadCrumb" className="mb-5">
 				<ol className="flex items-center gap-1 text-md text-gray-500 ">
 					<li>

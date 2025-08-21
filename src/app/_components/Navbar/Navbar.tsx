@@ -44,18 +44,18 @@ const Navbar = () => {
 						</a>
 					</div>
 					<div className="hidden md:flex md:items-center md:space-x-6">
-						<a
+						<Link
 							href="/"
 							className="text-gray-700 hover:text-accent-500 transition delay-50"
 						>
 							<ShoppingCart size={32} strokeWidth={1.5} />
-						</a>{' '}
-						<a
-							href="/"
+						</Link>
+						<Link
+							href={routes.account}
 							className="text-gray-700 hover:text-accent-500 transition delay-50 "
 						>
 							<User strokeWidth={1.5} size={32} />
-						</a>
+						</Link>
 					</div>
 
 					<div className="flex md:hidden">
@@ -98,18 +98,18 @@ const Navbar = () => {
 						About
 					</Link>
 					<div className="border-t border-gray-200 mt-2 pt-2">
-						<a
+						<Link
 							href="/"
 							className="text-gray-900 block rounded-lg px-3 py-2 text-base font-medium hover:bg-gray-100 transition-colors"
 						>
 							Cart
-						</a>
-						<a
-							href="/"
+						</Link>
+						<Link
+							href={routes.account}
 							className="text-gray-900 block rounded-lg px-3 py-2 text-base font-medium hover:bg-gray-100 transition-colors"
 						>
 							Login
-						</a>
+						</Link>
 					</div>
 				</div>
 			</div>
