@@ -1,11 +1,45 @@
 'use client';
+import {
+	createUserWithEmailAndPassword,
+	signInWithEmailAndPassword,
+} from 'firebase/auth';
 import { KeySquare, Mail } from 'lucide-react';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { auth } from '@/app/lib/firebase';
 import TextField from '../../Inputs/TextField';
 
 const AuthForm = () => {
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [mode, setMode] = useState<'login' | 'signup'>('login');
+
+	const fetchSignUp = async () => {
+		try {
+			if (mode === 'login') {
+				const response = await signInWithEmailAndPassword(
+					auth,
+					email,
+					password,
+				);
+				return;
+			}
+
+			const response = await createUserWithEmailAndPassword(
+				auth,
+				email,
+				password,
+			);
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
 	return (
 		<>
-			<h1 className="text-3xl text-center font-bold text-gray-600">Log In</h1>
+			<h1 className="text-3xl text-center font-bold text-gray-600">
+				{mode === 'login' ? 'Sign In' : 'Sign Up'}
+			</h1>
 			<div className="px-20">
 				<hr className="mt-6" />
 			</div>
@@ -34,18 +68,34 @@ const AuthForm = () => {
 					</div>
 				</form>
 			</div>
-			<div className="mt-5 flex justify-end">
-				<span className="inline-block text-gray-500 font-medium underline cursor-pointer text-sm hover:text-gray-800 transition-colors duration-200">
-					Forgot Password?
-				</span>
-			</div>
+			{mode === 'login' && (
+				<div className="mt-5 flex justify-end">
+					<span className="inline-block text-gray-500 font-medium underline cursor-pointer text-sm hover:text-gray-800 transition-colors duration-200">
+						Forgot Password?
+					</span>
+				</div>
+			)}
 
 			<button
 				type="button"
-				className="bg-accent-500 text-white font-bold mt-6 cursor-pointer rounded-md uppercase py-3 px-4 w-full transition-all duration-200 shadow-xl hover:shadow-sm"
+				onClick={fetchSignUp}
+				className="bg-accent-500 text-white font-bold mt-6 cursor-pointer rounded-md uppercase py-3 px-4 w-full transition-all duration-200 shadow-lg hover:shadow-sm"
 			>
-				Log In
+				{mode === 'login' ? 'Sign In' : 'Sign Up'}
 			</button>
+
+			<p className="mt-6 text-center text-gray-600 ">
+				{mode === 'login'
+					? 'Do not have an account?'
+					: 'Already have an account?'}
+				<button
+					type="button"
+					className="text-gray-500 font-medium underline cursor-pointer ml-2 hover:text-gray-800 transition-colors duration-200"
+					onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
+				>
+					{mode === 'login' ? 'Sign Up' : 'Sign In'}
+				</button>
+			</p>
 
 			<div className="mt-8 flex items-center justify-center gap-4">
 				<div className="h-[1px] w-full bg-gray-400" />
