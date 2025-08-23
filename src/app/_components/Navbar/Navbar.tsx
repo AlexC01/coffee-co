@@ -1,12 +1,37 @@
+/** biome-ignore-all lint/a11y/noSvgWithoutTitle: <explanation> */
 'use client';
+import { signOut } from 'firebase/auth';
 import { Menu, ShoppingCart, User } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { auth } from '@/app/lib/firebase';
 import { routes } from '@/app/lib/models/Routes';
+import { useAuthStore } from '@/app/lib/store/authStore';
 
 const Navbar = () => {
+	const router = useRouter();
+	const { user, loading } = useAuthStore();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+	const toggleDropDown = () => setIsDropdownOpen(!isDropdownOpen);
+
+	const [loadingOut, setLoadingOut] = useState(false);
+
+	const handleSignOut = async () => {
+		setLoadingOut(true);
+		try {
+			await signOut(auth);
+			toast.success('Logged out successfully');
+			router.push(routes.account);
+		} catch (err) {
+			toast.error('Error loging out, please try again');
+		} finally {
+			setLoadingOut(false);
+		}
+	};
 
 	return (
 		<nav className="fixed top-0 left-0 z-50 bg-white w-full  shadow-sm backdrop-blur-sm">
@@ -50,12 +75,69 @@ const Navbar = () => {
 						>
 							<ShoppingCart size={32} strokeWidth={1.5} />
 						</Link>
-						<Link
-							href={routes.account}
-							className="text-gray-700 hover:text-accent-500 transition delay-50 "
-						>
-							<User strokeWidth={1.5} size={32} />
-						</Link>
+						{!user && (
+							<Link
+								href={routes.account}
+								className="text-gray-700 hover:text-accent-500 transition delay-50 "
+							>
+								<User strokeWidth={1.5} size={32} />
+							</Link>
+						)}
+						{user && !loading && (
+							<div className="relative inline-flex">
+								<span className="inline-flex divide-x divide-gray-300 overflow-hidden rounded border border-gray-300 bg-white shadow-sm">
+									<button
+										type="button"
+										onClick={toggleDropDown}
+										className="px-3 py-2 text-md font-semibold text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900 focus:relative cursor-pointer"
+									>
+										Account
+									</button>
+									<button
+										aria-label="menu"
+										type="button"
+										onClick={toggleDropDown}
+										className="px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900 focus:relative cursor-pointer"
+									>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											fill="none"
+											viewBox="0 0 24 24"
+											strokeWidth="1.5"
+											stroke="currentColor"
+											className="size-4"
+										>
+											<path
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												d="m19.5 8.25-7.5 7.5-7.5-7.5"
+											/>
+										</svg>
+									</button>
+								</span>
+								<div
+									className={`${isDropdownOpen ? 'block' : 'hidden'} absolute end-0 top-12 z-auto w-42 overflow-hidden rounded border border-gray-300 bg-white shadow-sm`}
+								>
+									<Link
+										href={routes.home}
+										className="block px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900"
+									>
+										Orders
+									</Link>
+									<button
+										type="button"
+										onClick={handleSignOut}
+										disabled={loadingOut}
+										className=" w-full flex justify-between items-center px-3 py-2 text-sm font-medium text-red-700 transition-colors hover:bg-red-50 cursor-pointer"
+									>
+										<span>Log Out</span>
+										{loadingOut && (
+											<div className="size-4 animate-spin border-b-2 border-red-500 rounded-full" />
+										)}
+									</button>
+								</div>
+							</div>
+						)}
 					</div>
 
 					<div className="flex md:hidden">
