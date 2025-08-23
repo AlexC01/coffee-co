@@ -4,12 +4,14 @@ import {
 	signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { KeySquare, Mail } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { auth } from '@/app/lib/firebase';
 import TextField from '../../Inputs/TextField';
 
 const AuthForm = () => {
+	const router = useRouter();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [mode, setMode] = useState<'login' | 'signup'>('login');
@@ -17,21 +19,14 @@ const AuthForm = () => {
 	const fetchSignUp = async () => {
 		try {
 			if (mode === 'login') {
-				const response = await signInWithEmailAndPassword(
-					auth,
-					email,
-					password,
-				);
-				return;
+				await signInWithEmailAndPassword(auth, email, password);
+			} else {
+				await createUserWithEmailAndPassword(auth, email, password);
 			}
-
-			const response = await createUserWithEmailAndPassword(
-				auth,
-				email,
-				password,
-			);
+			toast.success(`${mode === 'login' ? 'Log In' : 'Sign Up'} successfully`);
+			router.push('/');
 		} catch (err) {
-			console.error(err);
+			toast.error('There was an error, please try again');
 		}
 	};
 
@@ -50,8 +45,8 @@ const AuthForm = () => {
 							placeholder="example@gmail.com"
 							label="Email"
 							id="email"
-							value=""
-							onChange={() => {}}
+							value={email}
+							onChange={(value) => setEmail(value)}
 							icon={<Mail strokeWidth={1.4} />}
 						/>
 					</div>
@@ -60,8 +55,8 @@ const AuthForm = () => {
 							placeholder="test123"
 							label="Password"
 							id="password"
-							value=""
-							onChange={() => {}}
+							value={password}
+							onChange={(value) => setPassword(value)}
 							type="password"
 							icon={<KeySquare strokeWidth={1.4} />}
 						/>
