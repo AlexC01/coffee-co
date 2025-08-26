@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { routes } from '@/app/lib/models/Routes';
 import { useAuthStore } from '@/app/lib/store/authStore';
-import LoadingSpinner from './LoadingSpinner';
 
 interface PublicRouteProps {
 	children: React.ReactNode;
@@ -15,16 +14,14 @@ const PublicRoute = ({
 	children,
 	redirectRoute = routes.home,
 }: PublicRouteProps) => {
-	const { user, loading } = useAuthStore();
+	const { user } = useAuthStore();
 	const router = useRouter();
 
 	useEffect(() => {
-		if (!loading && user) router.replace(redirectRoute);
-	}, [user, loading, router, redirectRoute]);
+		if (user) router.replace(redirectRoute);
+	}, [user, router, redirectRoute]);
 
-	if (loading) return <LoadingSpinner />;
-
-	if (user) return <LoadingSpinner />;
+	if (user) return null;
 
 	return <>{children}</>;
 };

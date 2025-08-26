@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { routes } from '@/app/lib/models/Routes';
 import { useAuthStore } from '@/app/lib/store/authStore';
-import LoadingSpinner from './LoadingSpinner';
 
 interface ProtectedRouteProps {
 	children: React.ReactNode;
@@ -15,16 +14,14 @@ const ProtectedRoute = ({
 	children,
 	fallbackRoute = routes.account,
 }: ProtectedRouteProps) => {
-	const { user, loading } = useAuthStore();
+	const { user } = useAuthStore();
 	const router = useRouter();
 
 	useEffect(() => {
-		if (!loading && !user) router.replace(fallbackRoute);
-	}, [user, loading, router, fallbackRoute]);
+		if (user === null) router.replace(fallbackRoute);
+	}, [user, router, fallbackRoute]);
 
-	if (loading) return <LoadingSpinner />;
-
-	if (!user) return <LoadingSpinner />;
+	if (!user) return null;
 
 	return <>{children}</>;
 };
