@@ -9,11 +9,9 @@ import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { auth } from '@/app/lib/firebase';
 import { routes } from '@/app/lib/models/Routes';
-import { useAuthStore } from '@/app/lib/store/authStore';
 
-const Navbar = () => {
+const Navbar = ({ user }: { user: any | null }) => {
 	const router = useRouter();
-	const { user, loading } = useAuthStore();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -26,6 +24,7 @@ const Navbar = () => {
 		setLoadingOut(true);
 		try {
 			await signOut(auth);
+			await fetch('/api/sessionLogout', { method: 'POST' });
 			toast.success('Logged out successfully');
 			router.push(routes.account);
 		} catch (err) {
@@ -107,7 +106,7 @@ const Navbar = () => {
 								<User strokeWidth={1.5} size={32} />
 							</Link>
 						)}
-						{user && !loading && (
+						{user && (
 							<div className="relative inline-flex">
 								<span className="inline-flex divide-x divide-gray-300 overflow-hidden rounded border border-gray-300 bg-white shadow-sm">
 									<button
@@ -224,7 +223,7 @@ const Navbar = () => {
 								Login
 							</Link>
 						)}
-						{user && !loading && (
+						{user && (
 							<div className="relative inline-flex ml-2">
 								<span className="inline-flex divide-x divide-gray-300 overflow-hidden rounded border border-gray-300 bg-white shadow-sm">
 									<button

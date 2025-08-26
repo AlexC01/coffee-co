@@ -56,7 +56,7 @@ export default async function RootLayout({
 					position="top-center"
 					toastOptions={{ style: { marginTop: '60px' } }}
 				/>
-				<Navbar />
+				<Navbar user={user} />
 				<main className="min-h-screen ">{children}</main>
 				<Footer />
 			</body>
