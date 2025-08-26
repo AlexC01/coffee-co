@@ -2,6 +2,7 @@
 import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
+	UserCredential,
 } from 'firebase/auth';
 import { KeySquare, LoaderCircle, Mail } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -21,11 +22,31 @@ const AuthForm = () => {
 		e.preventDefault();
 		setLoading(true);
 		try {
+			let userCredential: UserCredential;
 			if (mode === 'login') {
-				await signInWithEmailAndPassword(auth, email, password);
+				userCredential = await signInWithEmailAndPassword(
+					auth,
+					email,
+					password,
+				);
 			} else {
-				await createUserWithEmailAndPassword(auth, email, password);
+				userCredential = await createUserWithEmailAndPassword(
+					auth,
+					email,
+					password,
+				);
 			}
+
+			const idToken = await userCredential.user.getIdToken();
+
+			await fetch('/api/sessionLogin', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ idToken }),
+			});
+
 			toast.success(`${mode === 'login' ? 'Log In' : 'Sign Up'} successfully`);
 			router.push('/');
 		} catch (err) {
