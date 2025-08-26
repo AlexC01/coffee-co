@@ -1,10 +1,11 @@
 /** biome-ignore-all lint/a11y/noSvgWithoutTitle: <explanation> */
+/** biome-ignore-all lint/correctness/useExhaustiveDependencies: <explanation> */
 'use client';
 import { signOut } from 'firebase/auth';
 import { Menu, ShoppingCart, User } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { auth } from '@/app/lib/firebase';
 import { routes } from '@/app/lib/models/Routes';
@@ -17,6 +18,7 @@ const Navbar = () => {
 	const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 	const toggleDropDown = () => setIsDropdownOpen(!isDropdownOpen);
+	const dropdownRef = useRef<HTMLDivElement>(null);
 
 	const [loadingOut, setLoadingOut] = useState(false);
 
@@ -33,8 +35,28 @@ const Navbar = () => {
 		}
 	};
 
+	useEffect(() => {
+		const handleOutsideClick = (event: MouseEvent) => {
+			if (
+				dropdownRef.current &&
+				!dropdownRef.current.contains(event.target as Node)
+			) {
+				setIsDropdownOpen(false);
+			}
+		};
+
+		document.addEventListener('mousedown', handleOutsideClick);
+
+		return () => {
+			document.removeEventListener('mousedown', handleOutsideClick);
+		};
+	}, [dropdownRef]);
+
 	return (
-		<nav className="fixed top-0 left-0 z-50 bg-white w-full  shadow-sm backdrop-blur-sm">
+		<nav
+			className="fixed top-0 left-0 z-50 bg-white w-full  shadow-sm backdrop-blur-sm"
+			ref={dropdownRef}
+		>
 			<div className="max-w-7xl mx-auto  px-4 sm:px-6 lg:px-8">
 				<div className="flex justify-between items-center  h-16">
 					<div className="flex-shrink-0 flex items-center">
