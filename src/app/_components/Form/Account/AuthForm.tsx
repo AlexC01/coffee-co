@@ -3,7 +3,7 @@ import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
 } from 'firebase/auth';
-import { KeySquare, Mail } from 'lucide-react';
+import { KeySquare, LoaderCircle, Mail } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -14,9 +14,12 @@ const AuthForm = () => {
 	const router = useRouter();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [loading, setLoading] = useState(false);
 	const [mode, setMode] = useState<'login' | 'signup'>('login');
 
-	const fetchSignUp = async () => {
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		setLoading(true);
 		try {
 			if (mode === 'login') {
 				await signInWithEmailAndPassword(auth, email, password);
@@ -27,6 +30,8 @@ const AuthForm = () => {
 			router.push('/');
 		} catch (err) {
 			toast.error('There was an error, please try again');
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -39,7 +44,7 @@ const AuthForm = () => {
 				<hr className="mt-6" />
 			</div>
 			<div className="mt-6">
-				<form>
+				<form onSubmit={handleSubmit}>
 					<div>
 						<TextField
 							placeholder="example@gmail.com"
@@ -61,23 +66,25 @@ const AuthForm = () => {
 							icon={<KeySquare strokeWidth={1.4} />}
 						/>
 					</div>
+					{mode === 'login' && (
+						<div className="mt-5 flex justify-end">
+							<span className="inline-block text-gray-500 font-medium underline cursor-pointer text-sm hover:text-gray-800 transition-colors duration-200">
+								Forgot Password?
+							</span>
+						</div>
+					)}
+
+					<button
+						type="button"
+						onClick={handleSubmit}
+						disabled={loading}
+						className={`${loading ? 'opacity-55 cursor-not-allowed' : 'cursor-pointer'} bg-accent-500 text-white font-bold mt-6 rounded-md uppercase py-3 px-4 w-full transition-all duration-200 shadow-lg hover:shadow-sm flex items-center gap-2 justify-center`}
+					>
+						{mode === 'login' ? 'Sign In' : 'Sign Up'}
+						{loading && <LoaderCircle className="animate-spin -mt-1" />}
+					</button>
 				</form>
 			</div>
-			{mode === 'login' && (
-				<div className="mt-5 flex justify-end">
-					<span className="inline-block text-gray-500 font-medium underline cursor-pointer text-sm hover:text-gray-800 transition-colors duration-200">
-						Forgot Password?
-					</span>
-				</div>
-			)}
-
-			<button
-				type="button"
-				onClick={fetchSignUp}
-				className="bg-accent-500 text-white font-bold mt-6 cursor-pointer rounded-md uppercase py-3 px-4 w-full transition-all duration-200 shadow-lg hover:shadow-sm"
-			>
-				{mode === 'login' ? 'Sign In' : 'Sign Up'}
-			</button>
 
 			<p className="mt-6 text-center text-gray-600 ">
 				{mode === 'login'
@@ -85,7 +92,7 @@ const AuthForm = () => {
 					: 'Already have an account?'}
 				<button
 					type="button"
-					className="text-gray-500 font-medium underline cursor-pointer ml-2 hover:text-gray-800 transition-colors duration-200"
+					className="text-gray-500 font-medium underline cursor-pointer ml-2 hover:text-gray-800 transition-colors duration-200 "
 					onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
 				>
 					{mode === 'login' ? 'Sign Up' : 'Sign In'}
