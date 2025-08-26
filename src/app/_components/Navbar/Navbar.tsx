@@ -9,9 +9,13 @@ import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { auth } from '@/app/lib/firebase';
 import { routes } from '@/app/lib/models/Routes';
+import { useAuthStore } from '@/app/lib/store/authStore';
 
-const Navbar = ({ user }: { user: any | null }) => {
+const Navbar = ({ user: initialUser }: { user: any | null }) => {
 	const router = useRouter();
+	const [currentUser, setCurrentUser] = useState(initialUser);
+	const { user: storeUser } = useAuthStore();
+
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -52,6 +56,8 @@ const Navbar = ({ user }: { user: any | null }) => {
 			document.removeEventListener('mousedown', handleOutsideClick);
 		};
 	}, [dropdownRef]);
+
+	useEffect(() => setCurrentUser(storeUser), [storeUser]);
 
 	return (
 		<nav
@@ -98,7 +104,7 @@ const Navbar = ({ user }: { user: any | null }) => {
 						>
 							<ShoppingCart size={32} strokeWidth={1.5} />
 						</Link>
-						{!user && (
+						{!currentUser && (
 							<Link
 								href={routes.account}
 								className="text-gray-700 hover:text-accent-500 transition delay-50 "
@@ -106,7 +112,7 @@ const Navbar = ({ user }: { user: any | null }) => {
 								<User strokeWidth={1.5} size={32} />
 							</Link>
 						)}
-						{user && (
+						{currentUser && (
 							<div className="relative inline-flex">
 								<span className="inline-flex divide-x divide-gray-300 overflow-hidden rounded border border-gray-300 bg-white shadow-sm">
 									<button
@@ -215,7 +221,7 @@ const Navbar = ({ user }: { user: any | null }) => {
 						>
 							Cart
 						</Link>
-						{!user && (
+						{!currentUser && (
 							<Link
 								href={routes.account}
 								className="text-gray-900 block rounded-lg px-3 py-2 text-base font-medium hover:bg-gray-100 transition-colors"
@@ -223,7 +229,7 @@ const Navbar = ({ user }: { user: any | null }) => {
 								Login
 							</Link>
 						)}
-						{user && (
+						{currentUser && (
 							<div className="relative inline-flex ml-2">
 								<span className="inline-flex divide-x divide-gray-300 overflow-hidden rounded border border-gray-300 bg-white shadow-sm">
 									<button
