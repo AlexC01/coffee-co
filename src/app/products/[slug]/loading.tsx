@@ -1,6 +1,15 @@
+import BreadCrumb from '@/app/_components/BreadCrumb';
+import { routes } from '@/app/lib/models/Routes';
+
 const loading = () => {
 	return (
-		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 pt-14 pb-16">
+		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 pt-28 pb-16">
+			<BreadCrumb
+				links={[
+					{ label: 'Home', route: routes.home },
+					{ label: 'Products', route: routes.products },
+				]}
+			/>
 			<section className="flex flex-col md:flex-row  justify-between gap-12">
 				<div className="w-1/2 h-80 rounded-md bg-gray-400 mb-5" />
 

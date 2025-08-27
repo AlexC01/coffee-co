@@ -1,6 +1,5 @@
-import { ChevronRight } from 'lucide-react';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import BreadCrumb from '@/app/_components/BreadCrumb';
 import ProductDetail from '@/app/_components/ProductDetail/ProductDetail';
 import Reviews from '@/app/_components/ProductDetail/Reviews';
 import { routes } from '@/app/lib/models/Routes';
@@ -14,29 +13,13 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
 	if (!product) notFound();
 	return (
 		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 pt-28 pb-16">
-			<nav aria-label="BreadCrumb" className="mb-5">
-				<ol className="flex items-center gap-1 text-md text-gray-500 ">
-					<li>
-						<Link
-							href={routes.home}
-							className="block transition-colors duration-150 hover:text-gray-900"
-						>
-							Home
-						</Link>
-					</li>
-					<li>
-						<ChevronRight size={16} />
-					</li>
-					<li>
-						<Link
-							href={routes.products}
-							className="block transition-colors duration-150 hover:text-gray-900"
-						>
-							Products
-						</Link>
-					</li>
-				</ol>
-			</nav>
+			<BreadCrumb
+				links={[
+					{ label: 'Home', route: routes.home },
+					{ label: 'Products', route: routes.products },
+				]}
+			/>
+
 			<ProductDetail product={product} />
 			<div className="mt-20">
 				<h3 className="text-2xl sm:text-3xl font-bold mb-4">
