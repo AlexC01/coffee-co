@@ -6,6 +6,8 @@ interface TextFieldProps {
 	label?: string;
 	icon?: React.ReactElement;
 	type?: string;
+	error?: boolean;
+	onBlur?: () => void;
 }
 
 const TextField = ({
@@ -16,6 +18,8 @@ const TextField = ({
 	label,
 	icon,
 	type = 'text',
+	error,
+	onBlur,
 }: TextFieldProps) => {
 	return (
 		<div>
@@ -31,9 +35,10 @@ const TextField = ({
 				<input
 					type={type}
 					id={id}
-					className="w-full rounded border-gray-300 bg-white  shadow-sm pl-3 py-2 border-1"
+					className={`w-full rounded bg-white  shadow-sm pl-3 py-2 border-1 focus:outline-none ${error ? 'border-red-300 bg-red-50' : 'border-gray-300'}`}
 					onChange={(e) => onChange(e.target.value)}
 					value={value}
+					onBlur={onBlur}
 					placeholder={placeholder}
 				/>
 				{icon && (

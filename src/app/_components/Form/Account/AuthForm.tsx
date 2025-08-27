@@ -2,13 +2,14 @@
 import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
-	UserCredential,
+	type UserCredential,
 } from 'firebase/auth';
-import { KeySquare, LoaderCircle, Mail } from 'lucide-react';
+import { AlertCircle, KeySquare, LoaderCircle, Mail } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { auth } from '@/app/lib/firebase';
+import { validateAuthForm } from '@/app/lib/schemas/userSchema';
 import TextField from '../../Inputs/TextField';
 
 const AuthForm = () => {
@@ -17,10 +18,50 @@ const AuthForm = () => {
 	const [password, setPassword] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [mode, setMode] = useState<'login' | 'signup'>('login');
+	const [errors, setErrors] = useState<{ [key: string]: string }>({});
+	const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+	const validateField = (field: string, value: string) => {
+		const formData = {
+			email: field === 'email' ? value : email,
+			password: field === 'password' ? value : password,
+		};
+		const validation = validateAuthForm(formData);
+
+		if (!validation.success) {
+			const errorMessage = validation.errors[field];
+			if (errorMessage) {
+				setErrors((prev) => ({ ...prev, [field]: errorMessage }));
+			} else {
+				setErrors((prev) => {
+					const newErrors = { ...prev };
+					delete newErrors[field];
+					return newErrors;
+				});
+			}
+		} else {
+			setErrors((prev) => {
+				const newErrors = { ...prev };
+				delete newErrors[field];
+				return newErrors;
+			});
+		}
+	};
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setLoading(true);
+		setErrors({});
+
+		const validationResult = validateAuthForm({ email, password });
+
+		if (!validationResult.success) {
+			setErrors(validationResult.errors);
+			setTouched({ email: true, password: true });
+			setLoading(false);
+			return;
+		}
+
 		try {
 			let userCredential: UserCredential;
 			if (mode === 'login') {
@@ -72,9 +113,23 @@ const AuthForm = () => {
 							label="Email"
 							id="email"
 							value={email}
-							onChange={(value) => setEmail(value)}
+							error={!!errors.email}
+							onChange={(value) => {
+								setEmail(value);
+								if (touched.email) validateField('email', value);
+							}}
 							icon={<Mail strokeWidth={1.4} />}
+							onBlur={() => {
+								setTouched((prev) => ({ ...prev, email: true }));
+								validateField('email', email);
+							}}
 						/>
+						{errors.email && (
+							<p className="text-red-500 text-sm font-semibold mt-1 flex items-center gap-1">
+								<AlertCircle size={14} />
+								{errors.email}
+							</p>
+						)}
 					</div>
 					<div className="mt-6">
 						<TextField
@@ -82,10 +137,24 @@ const AuthForm = () => {
 							label="Password"
 							id="password"
 							value={password}
-							onChange={(value) => setPassword(value)}
+							onChange={(value) => {
+								setPassword(value);
+								if (touched.password) validateField('password', value);
+							}}
+							onBlur={() => {
+								setTouched((prev) => ({ ...prev, password: true }));
+								validateField('password', password);
+							}}
 							type="password"
+							error={!!errors.password}
 							icon={<KeySquare strokeWidth={1.4} />}
 						/>
+						{errors.password && (
+							<p className="text-red-500 text-sm font-semibold mt-1 flex items-center gap-1">
+								<AlertCircle size={14} />
+								{errors.password}
+							</p>
+						)}
 					</div>
 					{mode === 'login' && (
 						<div className="mt-5 flex justify-end">
