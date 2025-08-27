@@ -2,14 +2,17 @@
 import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
+	signInWithPopup,
 	type UserCredential,
 } from 'firebase/auth';
 import { AlertCircle, KeySquare, LoaderCircle, Mail } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { auth } from '@/app/lib/firebase';
+import { auth, provider } from '@/app/lib/firebase';
+import { routes } from '@/app/lib/models/Routes';
 import { validateAuthForm } from '@/app/lib/schemas/userSchema';
+import GoogleIcon from '../../Icons/GoogleIcon';
 import TextField from '../../Inputs/TextField';
 
 const AuthForm = () => {
@@ -45,6 +48,39 @@ const AuthForm = () => {
 				delete newErrors[field];
 				return newErrors;
 			});
+		}
+	};
+
+	const handleGoogleSignIn = async () => {
+		setLoading(true);
+		try {
+			const result = await signInWithPopup(auth, provider);
+
+			if (result) {
+				const idToken = await result.user.getIdToken();
+
+				await fetch('/api/sessionLogin', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ idToken }),
+				});
+
+				toast.success(
+					`${mode === 'login' ? 'Logged in Successfully' : 'Signed Up successfully'}`,
+				);
+				router.push(routes.home);
+				return;
+			}
+			toast.error('Google sign-in failed. Please try again');
+		} catch (error) {
+			console.error('Google sign-in error:', error);
+			toast.error(
+				`${mode === 'login' ? 'There was an error loging in with Google' : 'There was an error signing up with Google'}`,
+			);
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -89,7 +125,7 @@ const AuthForm = () => {
 			});
 
 			toast.success(`${mode === 'login' ? 'Log In' : 'Sign Up'} successfully`);
-			router.push('/');
+			router.push(routes.home);
 		} catch (err) {
 			toast.error('There was an error, please try again');
 		} finally {
@@ -183,7 +219,11 @@ const AuthForm = () => {
 				<button
 					type="button"
 					className="text-gray-500 font-medium underline cursor-pointer ml-2 hover:text-gray-800 transition-colors duration-200 "
-					onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
+					onClick={() => {
+						setMode(mode === 'login' ? 'signup' : 'login');
+						setErrors({});
+						setTouched({});
+					}}
 				>
 					{mode === 'login' ? 'Sign Up' : 'Sign In'}
 				</button>
@@ -194,6 +234,23 @@ const AuthForm = () => {
 				<p>OR</p>
 				<div className="h-[1px] w-full bg-gray-400" />
 			</div>
+
+			<button
+				type="button"
+				disabled={loading}
+				onClick={handleGoogleSignIn}
+				className={`w-full flex items-center justify-center gap-2 p-2 text-lg rounded-md mt-6 uppercase font-bold transition-colors duration-300 ${
+					loading
+						? 'bg-gray-100 border border-gray-200 text-gray-400 cursor-not-allowed'
+						: 'bg-white border border-gray-200 cursor-pointer hover:bg-gray-200'
+				}`}
+			>
+				<GoogleIcon size={20} />
+				{mode === 'login' ? 'Continue with Google' : 'Sign Up with Gogle'}
+				{loading && (
+					<div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500" />
+				)}
+			</button>
 		</>
 	);
 };
