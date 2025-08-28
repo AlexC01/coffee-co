@@ -5,16 +5,26 @@ import { signOut } from 'firebase/auth';
 import { Menu, ShoppingCart, User } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { auth } from '@/app/lib/firebase';
+import type { CartItems } from '@/app/lib/models/Cart';
 import { routes } from '@/app/lib/models/Routes';
 import { useAuthStore } from '@/app/lib/store/authStore';
+import { useCartStore } from '@/app/lib/store/useCartStore';
 
-const Navbar = ({ user: initialUser }: { user: any | null }) => {
+const Navbar = ({
+	user: initialUser,
+	cartItems: initialCartItems,
+}: {
+	user: any | null;
+	cartItems: CartItems | null;
+}) => {
 	const router = useRouter();
 	const [currentUser, setCurrentUser] = useState(initialUser);
 	const { user: storeUser } = useAuthStore();
+	const [currentCart, setCurrentCart] = useState(initialCartItems || {});
+	const { items: storeCartItems } = useCartStore();
 
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -58,6 +68,16 @@ const Navbar = ({ user: initialUser }: { user: any | null }) => {
 	}, [dropdownRef]);
 
 	useEffect(() => setCurrentUser(storeUser), [storeUser]);
+	useEffect(() => setCurrentCart(storeCartItems), [storeCartItems]);
+
+	const totalQuantity = useMemo(() => {
+		if (!currentCart) return 0;
+
+		return Object.values(currentCart).reduce(
+			(total, item) => total + item.quantity,
+			0,
+		);
+	}, [currentCart]);
 
 	return (
 		<nav
@@ -100,9 +120,14 @@ const Navbar = ({ user: initialUser }: { user: any | null }) => {
 					<div className="hidden md:flex md:items-center md:space-x-6">
 						<Link
 							href="/"
-							className="text-gray-700 hover:text-accent-500 transition delay-50"
+							className="text-gray-700 hover:text-accent-500 transition delay-50 relative"
 						>
 							<ShoppingCart size={32} strokeWidth={1.5} />
+							{totalQuantity > 0 && (
+								<div className=" bg-accent-500 rounded-full text-center text-xs absolute -top-3 -right-3 px-2 py-1 text-white font-bold">
+									<span>{totalQuantity}</span>
+								</div>
+							)}
 						</Link>
 						{!currentUser && (
 							<Link

@@ -3,11 +3,11 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { cookies } from 'next/headers';
 import { Toaster } from 'react-hot-toast';
-import AuthHydrator from './_components/AuthHydrator';
-import AuthListener from './_components/AuthListener';
+import AppListener from './_components/AppListener';
 import Footer from './_components/Footer/Footer';
 import Navbar from './_components/Navbar/Navbar';
 import { adminAuth } from './lib/firebaseAdmin';
+import { getCart } from './lib/services/cartService';
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -32,6 +32,7 @@ export default async function RootLayout({
 	const cookieStore = await cookies();
 	const sessionCookie = cookieStore.get('__session')?.value;
 	let user = null;
+	let cart = null;
 
 	if (sessionCookie) {
 		try {
@@ -40,6 +41,9 @@ export default async function RootLayout({
 				true,
 			);
 			user = decodedClaims;
+
+			const userCart = await getCart(user.uid);
+			if (userCart) cart = userCart.items;
 		} catch (err) {
 			user = null;
 		}
@@ -50,13 +54,12 @@ export default async function RootLayout({
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
-				<AuthHydrator user={user} />
-				<AuthListener />
+				<AppListener serverUser={user} serverCart={cart} />
 				<Toaster
 					position="top-center"
 					toastOptions={{ style: { marginTop: '60px' } }}
 				/>
-				<Navbar user={user} />
+				<Navbar user={user} cartItems={cart} />
 				<main className="min-h-screen ">{children}</main>
 				<Footer />
 			</body>
