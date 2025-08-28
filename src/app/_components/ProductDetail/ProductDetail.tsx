@@ -3,9 +3,14 @@
 import { Bookmark, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
+import type { CartItem } from '@/app/lib/models/Cart';
 import type { ProductInterface } from '@/app/lib/models/Products';
+import { addProductToCart } from '@/app/lib/services/cartService';
+import { useAuthStore } from '@/app/lib/store/authStore';
 import ColorSelector from '../Card/ColorSelector';
 import SelectField from '../Inputs/SelectField';
+import LoadingSpinner from '../LoadingSpinner';
 import Images from './Images';
 import StarRating from './StarRating';
 
@@ -14,10 +19,35 @@ interface ProductDetailProps {
 }
 
 const ProductDetail = ({ product }: ProductDetailProps) => {
+	const { user } = useAuthStore();
 	const [optionSelected, setOptionSelected] = useState(0);
 	const changeOptionSelected = (option: number) => setOptionSelected(option);
 	const [sizeSelected, setSizeSelected] = useState('');
 	const updateSizeSelected = (value: string) => setSizeSelected(value);
+	const [loading, setLoading] = useState(false);
+
+	const handleAddToCart = async () => {
+		if (!user) return;
+		setLoading(true);
+		const idProd = `${product.id}::${sizeSelected.toLowerCase().split(' ').join('')}::${product.colors[optionSelected]}`;
+		const itemData: CartItem = {
+			color: product.colors[optionSelected],
+			image: product.images[optionSelected],
+			size: sizeSelected,
+			price: product.price,
+			quantity: 1,
+			name: product.name,
+		};
+
+		try {
+			await addProductToCart(itemData, idProd, user.uid);
+			toast.success('Product added to cart');
+		} catch (err) {
+			toast.error('Error while adding product to the cart');
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	return (
 		<section className="flex flex-col md:flex-row  justify-between gap-12">
@@ -74,15 +104,17 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
 				<div className="flex items-center mt-10 gap-5 flex-col sm:flex-row">
 					<button
 						type="button"
-						disabled={sizeSelected === ''}
+						onClick={handleAddToCart}
+						disabled={sizeSelected === '' || loading}
 						className={`flex items-center gap-3 pl-5 pr-4 py-4 ${sizeSelected === '' ? 'bg-accent-500 opacity-60 cursor-not-allowed' : 'bg-accent-500 cursor-pointer'}  text-white font-bold uppercase shadow-lg transition-all hover:shadow-sm rounded-md`}
 					>
 						<ShoppingCart size={25} strokeWidth={1.5} />
 						Add to Cart
+						{loading && <LoadingSpinner />}
 					</button>
 					<button
 						type="button"
-						disabled={sizeSelected === ''}
+						disabled={sizeSelected === '' || loading}
 						className={`flex items-center border gap-3 pl-5 pr-4 py-4 ${sizeSelected === '' ? 'bg-gray-500 cursor-not-allowed' : 'cursor-pointer'}  text-gray-700 font-bold uppercase shadow-md transition-all hover:shadow-sm rounded-md`}
 					>
 						<Bookmark size={25} strokeWidth={1.5} />
