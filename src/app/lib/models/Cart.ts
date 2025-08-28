@@ -11,4 +11,5 @@ export type CartItems = Record<string, CartItem>;
 
 export interface CartInterface {
 	items: CartItems;
+	lastUpdated: string;
 }
