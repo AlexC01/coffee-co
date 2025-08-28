@@ -2,6 +2,20 @@ import { deleteDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import type { CartInterface, CartItem } from '../models/Cart';
 
+export const getCart = async (userId: string) => {
+	try {
+		const cartRef = doc(db, 'carts', userId);
+		const cartSnap = await getDoc(cartRef);
+
+		if (cartSnap.exists()) return cartSnap.data() as CartInterface;
+
+		return null;
+	} catch (err) {
+		console.error('Error while getting the cart', err);
+		throw err;
+	}
+};
+
 export const addProductToCart = async (
 	item: CartItem,
 	idProd: string,

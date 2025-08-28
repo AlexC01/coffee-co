@@ -6,7 +6,7 @@ import type { CartItems } from '../models/Cart';
 interface CartState {
 	items: CartItems;
 	setCart: (items: CartItems) => void;
-	subscribeToCart: (userId: string) => void;
+	subscribeToCart: (userId: string) => () => void;
 }
 
 export const useCartStore = create<CartState>()((set) => ({
