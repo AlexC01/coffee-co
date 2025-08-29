@@ -1,13 +1,19 @@
 'use client';
 
 import { Minus, Plus } from 'lucide-react';
+import Image from 'next/image';
 import { useCartStore } from '@/app/lib/store/useCartStore';
+import LoadingSpinner from '../LoadingSpinner';
 
 const CartProducts = () => {
-	const { items, isLoading } = useCartStore();
+	const { items, isInitialized } = useCartStore();
 
-	if (Object.keys(items).length === 0 && !isLoading) {
-		return <h2>There is no items in your cart</h2>;
+	if (Object.keys(items).length === 0 && isInitialized) {
+		return (
+			<h2 className="text-center font-bold text-2xl">
+				There is no items in your cart
+			</h2>
+		);
 	}
 
 	const transformColorName = (value: string) => {
@@ -21,6 +27,12 @@ const CartProducts = () => {
 	};
 	return (
 		<div className="col-span-2 w-full">
+			{!isInitialized && (
+				<div className="flex items-center justify-center flex-col">
+					<LoadingSpinner size="w-12 h-12" />
+					<h4 className="mt-3 font-semibold text-lg">Loading items...</h4>
+				</div>
+			)}
 			{Object.keys(items).map((productKey) => {
 				const product = items[productKey];
 
@@ -29,7 +41,14 @@ const CartProducts = () => {
 						className="bg-white shadow-md mb-4 p-4 flex items-center justify-between rounded-md"
 						key={productKey}
 					>
-						<div className="flex items-center gap-2">
+						<div className="flex items-center gap-6">
+							<Image
+								src={product.image}
+								alt="Mug Image"
+								width={120}
+								height={120}
+								className="rounded-md"
+							/>
 							<div className="flex flex-col">
 								<h2 className="text-md font-semibold">{product.name}</h2>
 								<span className="text-sm font-medium text-gray-500">
