@@ -14,7 +14,7 @@ interface AppListenerProps {
 
 const AppListener = ({ serverUser, serverCart }: AppListenerProps) => {
 	const { subscribeToCart, setCart, clearCart } = useCartStore();
-	const { setUser, initializeUser, clearUser } = useAuthStore();
+	const { setUser, initializeUser } = useAuthStore();
 	const isHydrated = useRef(false);
 
 	useEffect(() => {

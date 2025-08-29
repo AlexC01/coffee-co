@@ -2,17 +2,32 @@
 
 import { Minus, Plus } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { routes } from '@/app/lib/models/Routes';
+import { useAuthStore } from '@/app/lib/store/authStore';
 import { useCartStore } from '@/app/lib/store/useCartStore';
 import LoadingSpinner from '../LoadingSpinner';
 
 const CartProducts = () => {
+	const { user } = useAuthStore();
 	const { items, isInitialized } = useCartStore();
 
-	if (Object.keys(items).length === 0 && isInitialized) {
+	if (Object.keys(items).length === 0 && isInitialized && user) {
 		return (
-			<h2 className="text-center font-bold text-2xl">
-				There is no items in your cart
-			</h2>
+			<div className="col-span-3 w-full">
+				<div className="bg-white shadow-md mb-4 px-4 py-8 flex flex-col items-center justify-center rounded-md">
+					<h2 className="text-center font-semibold text-2xl">
+						In order to add items to your cart you can go to our products
+						section
+					</h2>
+					<Link
+						href={routes.products}
+						className="inline-block mt-8 bg-accent-500 rounded-full text-center text-white text-lg px-8 py-3 font-bold shadow-lg hover:bg-accent-600 transition duration-300"
+					>
+						Shop the Collection
+					</Link>
+				</div>
+			</div>
 		);
 	}
 
@@ -57,6 +72,9 @@ const CartProducts = () => {
 								<span className="text-sm font-medium text-gray-500">
 									Color: {transformColorName(product.color)}
 								</span>
+								<span className="text-xs font-medium text-gray-500 mt-1">
+									(${product.price.toFixed(2)} / unit)
+								</span>
 							</div>
 						</div>
 						<div className="flex flex-row items-center gap-4">
@@ -74,6 +92,9 @@ const CartProducts = () => {
 								<Plus size={16} />
 							</button>
 						</div>
+						<h4 className="font-bold text-lg">
+							${(product.price * product.quantity).toFixed(2)}
+						</h4>
 					</div>
 				);
 			})}

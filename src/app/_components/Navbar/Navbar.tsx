@@ -119,7 +119,7 @@ const Navbar = ({
 					</div>
 					<div className="hidden md:flex md:items-center md:space-x-6">
 						<Link
-							href={routes.cart}
+							href={currentUser ? routes.cart : routes.account}
 							className="text-gray-700 hover:text-accent-500 transition delay-50 relative"
 						>
 							<ShoppingCart size={32} strokeWidth={1.5} />
