@@ -1,6 +1,8 @@
-const LoadingSpinner = () => {
+const LoadingSpinner = ({ size = 'h-6 w-6' }) => {
 	return (
-		<div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500" />
+		<div
+			className={`animate-spin rounded-full ${size} border-b-2 border-blue-500`}
+		/>
 	);
 };
 
