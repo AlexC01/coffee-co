@@ -1,4 +1,5 @@
 import CartProducts from '../_components/Cart/CartProducts';
+import CartSummary from '../_components/Cart/CartSummary';
 
 const page = () => {
 	return (
@@ -8,8 +9,9 @@ const page = () => {
 					Your Cart
 				</h2>
 			</div>
-			<div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-5">
+			<div className="mt-8 grid grid-cols-1 md:grid-cols-3 md:gap-5 items-start">
 				<CartProducts />
+				<CartSummary />
 			</div>
 		</div>
 	);
