@@ -13,8 +13,8 @@ interface AppListenerProps {
 }
 
 const AppListener = ({ serverUser, serverCart }: AppListenerProps) => {
-	const { subscribeToCart, setCart } = useCartStore();
-	const { setUser, initializeUser } = useAuthStore();
+	const { subscribeToCart, setCart, clearCart } = useCartStore();
+	const { setUser, initializeUser, clearUser } = useAuthStore();
 	const isHydrated = useRef(false);
 
 	useEffect(() => {
@@ -27,24 +27,36 @@ const AppListener = ({ serverUser, serverCart }: AppListenerProps) => {
 	}, [serverUser, initializeUser, serverCart, setCart]);
 
 	useEffect(() => {
+		let cartUnsubscribe: (() => void) | undefined;
 		const authUnsubscribe = onAuthStateChanged(auth, (user) => {
-			setUser(user);
+			if (cartUnsubscribe) cartUnsubscribe();
+
+			if (user) {
+				setUser(user);
+				cartUnsubscribe = subscribeToCart(user.uid);
+			} else {
+				setUser(null);
+				clearCart();
+			}
 		});
 
-		return () => authUnsubscribe();
-	}, [setUser]);
-
-	const user = useAuthStore((state) => state.user);
-
-	useEffect(() => {
-		let cartUnsubscribe: (() => void) | undefined;
-
-		if (user) cartUnsubscribe = subscribeToCart(user.uid);
-
 		return () => {
+			authUnsubscribe();
 			if (cartUnsubscribe) cartUnsubscribe();
 		};
-	}, [user, subscribeToCart]);
+	}, [setUser, subscribeToCart, clearCart]);
+
+	// const user = useAuthStore((state) => state.user);
+
+	// useEffect(() => {
+	// 	let cartUnsubscribe: (() => void) | undefined;
+
+	// 	if (user) cartUnsubscribe = subscribeToCart(user.uid);
+
+	// 	return () => {
+	// 		if (cartUnsubscribe) cartUnsubscribe();
+	// 	};
+	// }, [user, subscribeToCart]);
 
 	return null;
 };

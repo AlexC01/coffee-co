@@ -7,13 +7,15 @@ interface CartState {
 	items: CartItems;
 	isInitialized: boolean;
 	setCart: (items: CartItems) => void;
-	subscribeToCart: (userId: string) => () => void;
+	clearCart: () => void;
+	subscribeToCart: (userId: string, logout?: boolean) => () => void;
 }
 
 export const useCartStore = create<CartState>()((set, get) => ({
 	items: {},
 	isInitialized: false,
 	setCart: (items) => set({ items, isInitialized: true }),
+	clearCart: () => set({ items: {}, isInitialized: false }),
 
 	subscribeToCart: (userId) => {
 		const cartRef = doc(db, 'carts', userId);

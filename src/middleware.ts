@@ -2,7 +2,7 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { routes } from '@/app/lib/models/Routes';
 
-const protectedRoutes: string[] = [];
+const protectedRoutes = [routes.cart];
 const publicRoutes = [routes.account];
 
 export const middleware = (request: NextRequest) => {
@@ -16,8 +16,8 @@ export const middleware = (request: NextRequest) => {
 		return NextResponse.next();
 	}
 
-	// if (protectedRoutes.includes(currentPath))
-	// 	return NextResponse.redirect(new URL(routes.account, request.url));
+	if (protectedRoutes.includes(currentPath))
+		return NextResponse.redirect(new URL(routes.account, request.url));
 
 	return NextResponse.next();
 };
