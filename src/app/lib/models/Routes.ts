@@ -4,4 +4,5 @@ export const routes = {
 	contact: '/contact',
 	home: '/',
 	account: '/account',
+	cart: '/cart',
 };

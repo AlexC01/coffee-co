@@ -5,13 +5,15 @@ import type { CartItems } from '../models/Cart';
 
 interface CartState {
 	items: CartItems;
+	isLoading: boolean;
 	setCart: (items: CartItems) => void;
 	subscribeToCart: (userId: string) => () => void;
 }
 
 export const useCartStore = create<CartState>()((set) => ({
 	items: {},
-	setCart: (items) => set({ items }),
+	isLoading: true,
+	setCart: (items) => set({ items, isLoading: false }),
 
 	subscribeToCart: (userId) => {
 		const cartRef = doc(db, 'carts', userId);

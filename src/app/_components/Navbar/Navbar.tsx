@@ -119,7 +119,7 @@ const Navbar = ({
 					</div>
 					<div className="hidden md:flex md:items-center md:space-x-6">
 						<Link
-							href="/"
+							href={routes.cart}
 							className="text-gray-700 hover:text-accent-500 transition delay-50 relative"
 						>
 							<ShoppingCart size={32} strokeWidth={1.5} />
@@ -241,10 +241,15 @@ const Navbar = ({
 					</Link>
 					<div className="border-t border-gray-200 mt-2 pt-2">
 						<Link
-							href="/"
-							className="text-gray-900 block rounded-lg px-3 py-2 text-base font-medium hover:bg-gray-100 transition-colors"
+							href={routes.cart}
+							className="text-gray-900 block rounded-lg px-3 py-2 text-base font-medium hover:bg-gray-100 transition-colors mb-2 relative"
 						>
 							Cart
+							{totalQuantity > 0 && (
+								<div className=" bg-accent-500 rounded-full text-center text-xs absolute -top-3 left-9 px-2 py-1 text-white font-bold">
+									<span>{totalQuantity}</span>
+								</div>
+							)}
 						</Link>
 						{!currentUser && (
 							<Link
