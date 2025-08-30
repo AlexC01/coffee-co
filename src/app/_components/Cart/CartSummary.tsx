@@ -21,7 +21,7 @@ const CartSummary = () => {
 	}
 
 	return (
-		<div className="w-full bg-white shadow-md rounded-md p-5 mt-8 md:mt-0">
+		<div className="w-full bg-white shadow-md rounded-md p-5 mt-8 lg:mt-0">
 			<h2 className="text-2xl font-bold text-center mt-3">Order Summary</h2>
 			<div className="flex justify-between items-center mt-8">
 				<p className="font-medium text-lg">Subtotal</p>

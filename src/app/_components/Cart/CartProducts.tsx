@@ -92,7 +92,7 @@ const CartProducts = () => {
 	};
 
 	return (
-		<div className="col-span-2 w-full">
+		<div className="lg:col-span-2 w-full">
 			{!isInitialized && (
 				<div className="flex items-center justify-center flex-col">
 					<LoadingSpinner size="w-12 h-12" />
@@ -102,7 +102,7 @@ const CartProducts = () => {
 			{sortedCarItems.map(([id, product]) => {
 				return (
 					<div
-						className="bg-white shadow-md mb-4 p-4 flex items-center justify-between rounded-md"
+						className="bg-white shadow-md mb-4 p-4 flex items-center justify-between flex-wrap rounded-md"
 						key={id}
 					>
 						<div className="flex items-center gap-6">
