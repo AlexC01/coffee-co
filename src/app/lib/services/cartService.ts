@@ -47,15 +47,19 @@ export const addProductToCart = async (
 	}
 };
 
-export const removeProductFromCart = async (idProd: string, userId: string) => {
+export const removeProductFromCart = async (
+	idProd: string,
+	userId: string,
+	deleteItem?: boolean,
+) => {
 	try {
 		const cartRef = doc(db, 'carts', userId);
 		const cartSnap = await getDoc(cartRef);
 
 		if (cartSnap) {
 			const copyItems = cartSnap.data() as CartInterface;
-
-			delete copyItems.items[idProd];
+			if (deleteItem) delete copyItems.items[idProd];
+			else copyItems.items[idProd].quantity--;
 
 			await setDoc(cartRef, copyItems);
 		} else {
