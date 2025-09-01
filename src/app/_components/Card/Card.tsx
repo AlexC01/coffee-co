@@ -33,24 +33,21 @@ const Card = ({ title, price, images, colors, sizes, slug }: CardsProps) => {
 						className="rounded-t-xl shadow-md h-auto object-cover w-full"
 						priority
 					/>
-					<div className="flex flex-col flex-grow p-4">
+					<div className="flex flex-col flex-grow px-4 pt-3 pb-2">
 						<h4 className="text-sm text-gray-700 font-semibold ">{title}</h4>
 						<span className="text-sm text-gray-500 inline-block ">
 							{sizes.join(' / ')}
 						</span>
-						<ColorSelector
-							colors={colors}
-							selected={currentSelection}
-							changeSelected={updateSelection}
-						/>
+
 						<div className="mt-auto flex justify-between items-center">
+							<ColorSelector
+								colors={colors}
+								selected={currentSelection}
+								changeSelected={updateSelection}
+							/>
 							<span className="text-gray-700 text-md font-semibold">
 								${Number(price).toFixed(2)}
 							</span>
-							<Heart
-								strokeWidth={1.5}
-								className="hover:text-accent-600 transition-colors duration-200"
-							/>
 						</div>
 					</div>
 				</div>

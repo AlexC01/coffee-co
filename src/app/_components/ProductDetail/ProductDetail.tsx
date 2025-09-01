@@ -113,14 +113,6 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
 						Add to Cart
 						{loading && <LoadingSpinner />}
 					</button>
-					<button
-						type="button"
-						disabled={sizeSelected === '' || loading}
-						className={`flex items-center border gap-3 pl-5 pr-4 py-4 ${sizeSelected === '' ? 'bg-gray-500 cursor-not-allowed' : 'cursor-pointer'}  text-gray-700 font-bold uppercase shadow-md transition-all hover:shadow-sm rounded-md`}
-					>
-						<Bookmark size={25} strokeWidth={1.5} />
-						Add to Wishlist
-					</button>
 				</div>
 			</div>
 		</section>
