@@ -114,7 +114,11 @@ const CartProducts = () => {
 								className="rounded-md"
 							/>
 							<div className="flex flex-col">
-								<h2 className="text-md font-semibold">{product.name}</h2>
+								<Link href={`${routes.products}/${product.slug}`}>
+									<h2 className="text-md font-semibold hover:text-gray-500 transition-colors duration-200">
+										{product.name}
+									</h2>
+								</Link>
 								<span className="text-sm font-medium text-gray-500">
 									Size: {product.size}
 								</span>

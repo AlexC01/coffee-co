@@ -37,6 +37,7 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
 			price: product.price,
 			quantity: 1,
 			name: product.name,
+			slug: product.slug,
 		};
 
 		try {
