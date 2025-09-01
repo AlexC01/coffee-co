@@ -1,20 +1,14 @@
 'use client';
 
 import { ShoppingBag } from 'lucide-react';
-import { useMemo } from 'react';
+import Link from 'next/link';
+import useCartItemsSortPrice from '@/app/hooks/useCartItemsSortPrice';
+import { routes } from '@/app/lib/models/Routes';
 import { useCartStore } from '@/app/lib/store/useCartStore';
 
 const CartSummary = () => {
 	const { items, isInitialized } = useCartStore();
-
-	const subTotal = useMemo(() => {
-		if (!items) return 0;
-
-		return Object.values(items).reduce(
-			(total, item) => total + item.quantity * item.price,
-			0,
-		);
-	}, [items]);
+	const { subTotal } = useCartItemsSortPrice();
 
 	if (Object.keys(items).length === 0 && isInitialized) {
 		return null;
@@ -38,13 +32,13 @@ const CartSummary = () => {
 			</div>
 
 			<div className="mt-8">
-				<button
-					type="button"
+				<Link
+					href={routes.checkout}
 					className="flex items-center justify-center gap-2 w-full bg-accent-500 rounded-md shadow-md uppercase text-white font-bold p-3 hover:bg-accent-600 hover:shadow-sm transition-colors duration-200 cursor-pointer"
 				>
 					Proceed to Checkout
 					<ShoppingBag size={20} className="-mt-1" />
-				</button>
+				</Link>
 			</div>
 		</div>
 	);

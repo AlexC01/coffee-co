@@ -3,8 +3,9 @@
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
+import useCartItemsSortPrice from '@/app/hooks/useCartItemsSortPrice';
 import type { CartItem } from '@/app/lib/models/Cart';
 import { routes } from '@/app/lib/models/Routes';
 import {
@@ -19,17 +20,7 @@ const CartProducts = () => {
 	const { user } = useAuthStore();
 	const { items, isInitialized } = useCartStore();
 	const [loading, setLoading] = useState(false);
-
-	const sortedCarItems = useMemo(() => {
-		const cartItemsArray = Object.entries(items);
-		cartItemsArray.sort(([idA, a], [idB, b]) => {
-			const nameComparison = a.name.localeCompare(b.name);
-			if (nameComparison !== 0) return nameComparison;
-
-			return idA.localeCompare(idB);
-		});
-		return cartItemsArray;
-	}, [items]);
+	const { sortedCarItems } = useCartItemsSortPrice();
 
 	const handleAddToCart = async (item: CartItem, idProd: string) => {
 		if (!user) return;
