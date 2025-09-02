@@ -1,3 +1,4 @@
+import CheckoutPage from '../_components/Checkout/CheckoutForm';
 import CheckoutSummary from '../_components/Checkout/CheckoutSummary';
 
 const page = () => {
@@ -9,6 +10,7 @@ const page = () => {
 				</h2>
 			</div>
 			<div className="mt-8 grid grid-cols-1 lg:grid-cols-3 lg:gap-5 items-start">
+				<CheckoutPage />
 				<CheckoutSummary />
 			</div>
 		</div>
