@@ -23,7 +23,7 @@ const OrderDetail = ({ order }: OrderDetailProps) => {
 	};
 
 	return (
-		<div className="border border-dashed shadow-md bg-white rounded-md p-4">
+		<div className="border border-dashed shadow-md bg-white rounded-md px-4 py-6">
 			<div className="flex justify-between items-center">
 				<h3 className="text-sm">{date}</h3>
 				<h2 className="text-xl font-semibold text-center">
