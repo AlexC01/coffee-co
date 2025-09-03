@@ -1,21 +1,25 @@
 'use client';
 
 import {
-	CardElement,
 	PaymentElement,
 	useElements,
 	useStripe,
 } from '@stripe/react-stripe-js';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { routes } from '@/app/lib/models/Routes';
+import { useCartStore } from '@/app/lib/store/useCartStore';
 
 interface FormProps {
 	clientSecret: string | null;
 }
 
 const CheckoutPaymentForm = ({ clientSecret }: FormProps) => {
+	const router = useRouter();
 	const stripe = useStripe();
 	const elements = useElements();
+	const { clearCart } = useCartStore();
 	const [loading, setLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -32,11 +36,13 @@ const CheckoutPaymentForm = ({ clientSecret }: FormProps) => {
 		if (error) {
 			setErrorMessage(error.message || 'An unexepected error occurred');
 			toast.error(error.message ?? 'Payment failed!');
+			setLoading(false);
 		} else {
-			console.log(paymentIntent);
+			if (paymentIntent.status === 'succeeded') {
+				clearCart();
+				router.replace(`${routes.checkoutSuccess}?order=${paymentIntent.id}`);
+			}
 		}
-
-		setLoading(false);
 	};
 
 	return (
