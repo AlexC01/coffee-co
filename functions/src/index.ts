@@ -1,32 +1,82 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * import {onCall} from "firebase-functions/v2/https";
- * import {onDocumentWritten} from "firebase-functions/v2/firestore";
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
+import * as admin from 'firebase-admin';
+import * as functions from 'firebase-functions';
+import Stripe from 'stripe';
 
-import {setGlobalOptions} from "firebase-functions";
-import {onRequest} from "firebase-functions/https";
-import * as logger from "firebase-functions/logger";
+admin.initializeApp();
 
-// Start writing functions
-// https://firebase.google.com/docs/functions/typescript
+let stripe: Stripe;
+if (process.env.STRIPE_SECRET_KEY) {
+	stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+		apiVersion: '2025-08-27.basil',
+	});
+}
 
-// For cost control, you can set the maximum number of containers that can be
-// running at the same time. This helps mitigate the impact of unexpected
-// traffic spikes by instead downgrading performance. This limit is a
-// per-function limit. You can override the limit for each function using the
-// `maxInstances` option in the function's options, e.g.
-// `onRequest({ maxInstances: 5 }, (req, res) => { ... })`.
-// NOTE: setGlobalOptions does not apply to functions using the v1 API. V1
-// functions should each use functions.runWith({ maxInstances: 10 }) instead.
-// In the v1 API, each function can only serve one request per container, so
-// this will be the maximum concurrent request count.
-setGlobalOptions({ maxInstances: 10 });
+const enpointSecret = process.env.STRIPE_WEBHOOK_SECRET as string;
 
-// export const helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+export const createOrderAfterPayment = functions.https.onRequest(
+	async (req, res) => {
+		if (!stripe) {
+			console.error(
+				'Stripe client not initialized. Missing STRIPE_SECRET_KEY.',
+			);
+			res.status(500).send('Internal Server Error');
+			return;
+		}
+		const sig = req.headers['stripe-signature'] as string;
+		let event: Stripe.Event;
+
+		try {
+			event = stripe.webhooks.constructEvent(req.rawBody, sig, enpointSecret);
+			console.log('Webhook event received and verified.');
+		} catch (err) {
+			console.error(
+				'Webhook signature verification failed.',
+				(err as Error).message,
+			);
+			res.status(400).send(`Webhook Error: ${err}`);
+			return;
+		}
+
+		if (event.type === 'payment_intent.succeeded') {
+			const paymentIntent = event.data.object as Stripe.PaymentIntent;
+
+			try {
+				console.log('Received payment intent with ID:', paymentIntent.id);
+				const cartData = JSON.parse(paymentIntent.metadata.cart as string);
+				console.log('Parsed cart data:', cartData);
+
+				const cartItems = Object.values(cartData);
+				console.log('Transformed cart items for Firestore:', cartItems);
+
+				const orderData = {
+					orderId: paymentIntent.id,
+					userId: paymentIntent.metadata.userId || 'guest_user',
+					amount: paymentIntent.amount,
+					currency: paymentIntent.currency,
+					status: 'succeeded',
+					// createdAt: admin.firestore.FieldValue.serverTimestamp(),
+				};
+
+				console.log('Order data to be written:', orderData);
+
+				await admin
+					.firestore()
+					.collection('orders')
+					.doc(orderData.orderId)
+					.set(orderData);
+
+				console.log(
+					`Order created successfully for PaymentIntent ID: ${orderData.orderId}`,
+				);
+				res.status(200).send('Order created successfully.');
+				return;
+			} catch (dbError) {
+				console.error('Error writing order to Firestore: ', dbError);
+				res.status(500).send('Error writing order to firestore');
+				return;
+			}
+		}
+
+		res.status(200).end();
+	},
+);
