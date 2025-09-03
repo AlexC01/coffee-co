@@ -1,5 +1,6 @@
 export const routes = {
 	checkout: '/checkout',
+	checkoutSuccess: '/checkout/success',
 	products: '/products',
 	about_us: '/about-us',
 	contact: '/contact',
