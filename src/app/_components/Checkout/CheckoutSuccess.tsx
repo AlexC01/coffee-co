@@ -4,6 +4,7 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { db } from '@/app/lib/firebase';
 import type { OrderInterface } from '@/app/lib/models/Order';
+import OrderDetail from '../Order/OrderDetail';
 
 interface CheckoutSuccessProps {
 	orderId: string;
@@ -78,8 +79,8 @@ const CheckoutSuccess = ({ orderId }: CheckoutSuccessProps) => {
 					Thank you for your purchase. Your order details are below.
 				</p>
 			</div>
-			<div className="mt-10 p-4 border rounded-lg shadow-md">
-				<h2 className="text-xl font-semibold">Order ID: {order.orderId}</h2>
+			<div className="mt-10">
+				<OrderDetail order={order} />
 			</div>
 		</>
 	);
