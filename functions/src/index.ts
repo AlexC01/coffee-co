@@ -1,8 +1,10 @@
 import * as admin from 'firebase-admin';
+import { getFirestore } from 'firebase-admin/firestore';
 import * as functions from 'firebase-functions';
+
 import Stripe from 'stripe';
 
-admin.initializeApp();
+admin.initializeApp({ projectId: 'coffe-co' });
 
 let stripe: Stripe;
 if (process.env.STRIPE_SECRET_KEY) {
@@ -41,29 +43,33 @@ export const createOrderAfterPayment = functions.https.onRequest(
 			const paymentIntent = event.data.object as Stripe.PaymentIntent;
 
 			try {
-				console.log('Received payment intent with ID:', paymentIntent.id);
-				const cartData = JSON.parse(paymentIntent.metadata.cart as string);
-				console.log('Parsed cart data:', cartData);
+				const cartId = JSON.parse(paymentIntent.metadata.cart as string);
+				const cartRef = admin.firestore().collection('carts').doc(cartId);
+				const cartSnap = await cartRef.get();
 
-				const cartItems = Object.values(cartData);
-				console.log('Transformed cart items for Firestore:', cartItems);
+				if (!cartSnap.exists) {
+					res.status(404).send('Cart not found');
+					return;
+				}
+
+				const cartData = cartSnap.data();
 
 				const orderData = {
 					orderId: paymentIntent.id,
-					userId: paymentIntent.metadata.userId || 'guest_user',
+					userId: cartId || 'guest_user',
 					amount: paymentIntent.amount,
 					currency: paymentIntent.currency,
+					createdAt: admin.firestore.FieldValue.serverTimestamp(),
 					status: 'succeeded',
-					// createdAt: admin.firestore.FieldValue.serverTimestamp(),
+					items: cartData?.items,
 				};
 
-				console.log('Order data to be written:', orderData);
-
-				await admin
-					.firestore()
+				await getFirestore()
 					.collection('orders')
-					.doc(orderData.orderId)
+					.doc(paymentIntent.id)
 					.set(orderData);
+
+				await cartRef.delete();
 
 				console.log(
 					`Order created successfully for PaymentIntent ID: ${orderData.orderId}`,
