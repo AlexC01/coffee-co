@@ -57,7 +57,7 @@ export const createOrderAfterPayment = functions.https.onRequest(
 				const orderData = {
 					orderId: paymentIntent.id,
 					userId: cartId || 'guest_user',
-					amount: paymentIntent.amount,
+					amount: paymentIntent.amount / 100,
 					currency: paymentIntent.currency,
 					createdAt: admin.firestore.FieldValue.serverTimestamp(),
 					status: 'succeeded',
@@ -71,9 +71,6 @@ export const createOrderAfterPayment = functions.https.onRequest(
 
 				await cartRef.delete();
 
-				console.log(
-					`Order created successfully for PaymentIntent ID: ${orderData.orderId}`,
-				);
 				res.status(200).send('Order created successfully.');
 				return;
 			} catch (dbError) {
