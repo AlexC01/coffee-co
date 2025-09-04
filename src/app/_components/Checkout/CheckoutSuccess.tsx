@@ -3,7 +3,10 @@
 import { doc, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { db } from '@/app/lib/firebase';
-import type { OrderInterface } from '@/app/lib/models/Order';
+import type {
+	OrderInterface,
+	OrderInterfaceResponse,
+} from '@/app/lib/models/Order';
 import OrderDetail from '../Order/OrderDetail';
 
 interface CheckoutSuccessProps {
@@ -33,7 +36,10 @@ const CheckoutSuccess = ({ orderId }: CheckoutSuccessProps) => {
 			(docSnap) => {
 				clearTimeout(loadingTimeout);
 				if (docSnap.exists()) {
-					setOrder(docSnap.data() as OrderInterface);
+					const orderData = docSnap.data() as OrderInterfaceResponse;
+					const createdAt = orderData.createdAt.toDate().toISOString();
+					const newObj = { ...orderData, createdAt } as OrderInterface;
+					setOrder(newObj);
 					setLoading(false);
 				} else {
 					console.log('Order not found yet...');

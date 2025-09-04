@@ -2,7 +2,12 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { routes } from '@/app/lib/models/Routes';
 
-const protectedRoutes = [routes.cart];
+const protectedRoutes = [
+	routes.cart,
+	routes.checkout,
+	routes.checkoutSuccess,
+	routes.orders,
+];
 const publicRoutes = [routes.account];
 
 export const middleware = (request: NextRequest) => {
