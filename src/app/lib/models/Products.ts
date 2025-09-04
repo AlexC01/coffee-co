@@ -40,4 +40,5 @@ export const productsColorMap = {
 	'deep-blue': 'bg-deep-blue',
 	'forest-green': 'bg-forest-green',
 	'midnight-blue': 'bg-midnight-blue',
+	'onyx-black': 'bg-onyx-black',
 };

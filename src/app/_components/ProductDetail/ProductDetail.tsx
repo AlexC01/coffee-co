@@ -107,7 +107,7 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
 						type="button"
 						onClick={handleAddToCart}
 						disabled={sizeSelected === '' || loading || !user}
-						className={`flex items-center gap-3 pl-5 pr-4 py-4 ${sizeSelected === '' ? 'bg-accent-500 opacity-60 cursor-not-allowed' : 'bg-accent-500 cursor-pointer'}  text-white font-bold uppercase shadow-lg transition-all hover:shadow-sm rounded-md`}
+						className={`flex items-center gap-3 pl-5 pr-4 py-4 ${sizeSelected === '' || loading || !user ? 'bg-accent-500 opacity-60 cursor-not-allowed' : 'bg-accent-500 cursor-pointer'}  text-white font-bold uppercase shadow-lg transition-all hover:shadow-sm rounded-md`}
 					>
 						<ShoppingCart size={25} strokeWidth={1.5} />
 						Add to Cart
