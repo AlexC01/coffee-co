@@ -83,7 +83,7 @@ const OrderLayout = () => {
 									>
 										<td className="px-3 py-2 whitespace-nowrap">
 											<Link
-												href={routes.checkout}
+												href={`${routes.orders}/${order.orderId}`}
 												className="text-gray-500 cursor-pointer hover:text-gray-600"
 											>
 												{order.orderId}

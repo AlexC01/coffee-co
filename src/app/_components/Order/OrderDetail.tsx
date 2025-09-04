@@ -1,15 +1,15 @@
 'use client';
 
 import Image from 'next/image';
-import type { OrderInterfaceResponse } from '@/app/lib/models/Order';
+import type { OrderInterface } from '@/app/lib/models/Order';
 
 interface OrderDetailProps {
-	order: OrderInterfaceResponse;
+	order: OrderInterface;
 }
 
 const OrderDetail = ({ order }: OrderDetailProps) => {
 	const { orderId, items, createdAt, amount, status } = order;
-	const date = createdAt.toDate().toLocaleString();
+	const date = new Date(createdAt).toLocaleString();
 	const orderItems = Object.entries(items);
 
 	const transformColorName = (value: string) => {

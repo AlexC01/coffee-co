@@ -1,6 +1,8 @@
 import {
 	collection,
 	type DocumentData,
+	doc,
+	getDoc,
 	getDocs,
 	type QuerySnapshot,
 	query,
@@ -35,5 +37,24 @@ export const getAllOrders = async (userId: string) => {
 	} catch (err) {
 		console.error('Error while fetching featured products', err);
 		return [];
+	}
+};
+
+export const getSingleOrder = async (orderId: string) => {
+	try {
+		const orderRef = doc(db, 'orders', orderId);
+		const orderSnap = await getDoc(orderRef);
+
+		if (orderSnap.exists()) {
+			const orderData = orderSnap.data() as OrderInterfaceResponse;
+			const createdAt = orderData.createdAt.toDate().toISOString();
+			const newObj = { ...orderData, createdAt } as OrderInterface;
+			return newObj;
+		}
+
+		return null;
+	} catch (err) {
+		console.error('Error while getting the order', err);
+		return null;
 	}
 };
