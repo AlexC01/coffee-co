@@ -50,7 +50,10 @@ const CheckoutPaymentForm = ({ clientSecret }: FormProps) => {
 			onSubmit={handleSubmit}
 			className="p-6 bg-white rounded-lg shadow-md w-full"
 		>
-			<h2 className="text-2xl font-bold mb-4">Complete your purchase</h2>
+			<h2 className="text-2xl font-bold ">Complete your purchase</h2>
+			<span className="text-sm text-gray-500 mb-4 block">
+				Use 4242424242424242 as the card number for testing purposes
+			</span>
 			<div className="mb-4">
 				<PaymentElement />
 			</div>
