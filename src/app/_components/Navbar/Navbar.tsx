@@ -110,12 +110,6 @@ const Navbar = ({
 						>
 							About Us
 						</Link>
-						<a
-							href={routes.contact}
-							className="rounded-sm   hover:text-accent-500 transition delay-50"
-						>
-							Contact
-						</a>
 					</div>
 					<div className="hidden md:flex md:items-center md:space-x-6">
 						<Link
