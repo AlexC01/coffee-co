@@ -1,36 +1,17 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Coffee Co
 
-## Getting Started
+A personal e-commerce platform built with Next.js, Firebase, and Stripe. This project demonstrates a complete, end-to-end e-commerce flow, from product display to secure payment processing and order management.
 
-First, run the development server:
+Note: This is a personal project intended for demonstration purposes only. It uses Stripe's test credit card numbers for all transactions and does not process real payments.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Key Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Secure Payment Processing:** Integrated with Stripe to handle all credit card payments securely.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Firebase Cloud Functions:** A robust backend powered by serverless functions.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Stripe Webhook:** A webhook listener to securely and reliably process successful payments and update the database.
 
-## Learn More
+- **Real-time Order Tracking:** Utilizes Firestore's onSnapshot listener to provide users with a real-time view of their order status after a successful payment.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Secure Database Management:** All sensitive order information is stored in Firestore, ensuring data integrity and security.
