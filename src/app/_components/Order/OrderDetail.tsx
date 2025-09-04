@@ -1,10 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import type { OrderInterface } from '@/app/lib/models/Order';
+import type { OrderInterfaceResponse } from '@/app/lib/models/Order';
 
 interface OrderDetailProps {
-	order: OrderInterface;
+	order: OrderInterfaceResponse;
 }
 
 const OrderDetail = ({ order }: OrderDetailProps) => {

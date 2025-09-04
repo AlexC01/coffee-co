@@ -173,7 +173,7 @@ const Navbar = ({
 									className={`${isDropdownOpen ? 'block' : 'hidden'} absolute end-0 top-12 z-auto w-42 overflow-hidden rounded border border-gray-300 bg-white shadow-sm`}
 								>
 									<Link
-										href={routes.home}
+										href={routes.orders}
 										className="block px-3 py-2 text-sm  text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900 font-semibold"
 									>
 										Orders
@@ -290,7 +290,7 @@ const Navbar = ({
 									className={`${isDropdownOpen ? 'block' : 'hidden'} absolute top-12 z-auto w-42 overflow-hidden rounded border border-gray-300 bg-white shadow-sm`}
 								>
 									<Link
-										href={routes.home}
+										href={routes.orders}
 										className="block px-3 py-2 text-sm  text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900 font-semibold"
 									>
 										Orders
