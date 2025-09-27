@@ -4,6 +4,8 @@ A personal e-commerce platform built with Next.js, Firebase, and Stripe. This pr
 
 Note: This is a personal project intended for demonstration purposes only. It uses Stripe's test credit card numbers for all transactions and does not process real payments.
 
+Live: https://coffee-co-blue.vercel.app/
+
 ## Key Features
 
 - **Secure Payment Processing:** Integrated with Stripe to handle all credit card payments securely.
